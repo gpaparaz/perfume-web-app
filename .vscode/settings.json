@@ -1,0 +1,30 @@
+{
+    // Impostazioni globali del workspace
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    },
+  
+    // Configurazione specifica per TypeScript e React (Usa Prettier)
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+  
+    // Configurazione specifica per Java (Usa il motore di Red Hat / Eclipse)
+    "[java]": {
+      "editor.defaultFormatter": "redhat.java",
+      // Opzionale: pulisce gli import anche durante la scrittura se preferisci
+      "java.completion.importOrder": [
+        "java",
+        "javax",
+        "org",
+        "com"
+      ]
+    }
+  }
