@@ -1,4 +1,4 @@
-package backend;
+package com.perfume;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

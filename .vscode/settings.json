@@ -26,5 +26,6 @@
         "org",
         "com"
       ]
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
   }
