@@ -50,9 +50,15 @@
   }
 }
 
+#root {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; 
+}
+
 body {
   margin: 0;
-  background-color: whitesmoke;
 }
 
 h1,
