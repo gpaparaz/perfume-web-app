@@ -1,42 +1,48 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import api from "../services/axios";
 import type { Ingredient } from "../types";
 
-export const useIngredients = (initialLetter: string = "") => {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [selectedLetter, setSelectedLetter] = useState<string>(initialLetter);
+export const useIngredients = () => {
+  const [allIngredients, setAllIngredients] = useState<Ingredient[]>([]);
+  const [selectedLetter, setSelectedLetter] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchIngredients = useCallback(async (letter: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const endpoint = letter ? `/glossary?letter=${letter}` : "/glossary";
-      const response = await api.get<Ingredient[]>(endpoint);
-      setIngredients(response.data);
-    } catch (err) {
-      console.error("Errore nel recupero degli ingredienti:", err);
-      setError("Impossibile caricare gli ingredienti. Riprova più tardi.");
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const response = await api.get<Ingredient[]>("/glossary");
+        setAllIngredients(response.data);
+      } catch (err) {
+        console.error("Errore nel recupero del glossario:", err);
+        setError("Impossibile caricare il glossario. Riprova.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAll();
   }, []);
 
-  useEffect(() => {
-    fetchIngredients(selectedLetter);
-  }, [selectedLetter, fetchIngredients]);
+  const filteredIngredients = useMemo(() => {
+    if (!selectedLetter) return allIngredients;
+
+    return allIngredients.filter((ingredient) =>
+      ingredient.name
+        .trim()
+        .toLowerCase()
+        .startsWith(selectedLetter.toLowerCase())
+    );
+  }, [allIngredients, selectedLetter]);
 
   const toggleLetter = (letter: string) => {
     setSelectedLetter((prev) => (prev === letter ? "" : letter));
   };
 
   return {
-    ingredients,
+    ingredients: filteredIngredients,
     selectedLetter,
     loading,
     error,
     toggleLetter,
-    refetch: () => fetchIngredients(selectedLetter),
   };
 };

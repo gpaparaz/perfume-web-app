@@ -1,5 +1,7 @@
 package com.perfume.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,26 +16,50 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
+    private String category;
+    private String subcategory;
+
+    @Column(name = "short_description", columnDefinition = "TEXT")
+    private String shortDescription;
+
+    @Column(name = "botanical_name")
+    private String botanicalName;
+
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String appearance;
 
-    @Column(name = "olfactory_family")
-    private String olfactoryFamily;
+    @Column(name = "odor_strength")
+    private String odorStrength;
 
+    @Column(name = "producing_countries", columnDefinition = "TEXT")
+    private String producingCountries;
+
+    @Column(name = "typical_volatility")
+    private String typicalVolatility;
+
+    @Column(name = "evolution_immediate", columnDefinition = "TEXT")
+    private String evolutionImmediate;
+
+    @Column(name = "evolution_after_hours", columnDefinition = "TEXT")
+    private String evolutionAfterHours;
+
+    @Column(name = "evolution_after_days", columnDefinition = "TEXT")
+    private String evolutionAfterDays;
+
+    @Column(name = "full_extracted_text", columnDefinition = "TEXT")
+    private String fullExtractedText;
+
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    // Costruttore vuoto obbligatorio per JPA
     public Ingredient() {
     }
 
-    public Ingredient(Long id, String name, String description, String olfactoryFamily) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.olfactoryFamily = olfactoryFamily;
-    }
-
-    // ... getter e setter
+    // GETTER E SETTER
     public Long getId() {
         return id;
     }
@@ -50,19 +76,103 @@ public class Ingredient {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCategory() {
+        return category;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getOlfactoryFamily() {
-        return olfactoryFamily;
+    public String getSubcategory() {
+        return subcategory;
     }
 
-    public void setOlfactoryFamily(String olfactoryFamily) {
-        this.olfactoryFamily = olfactoryFamily;
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getBotanicalName() {
+        return botanicalName;
+    }
+
+    public void setBotanicalName(String botanicalName) {
+        this.botanicalName = botanicalName;
+    }
+
+    public String getAppearance() {
+        return appearance;
+    }
+
+    public void setAppearance(String appearance) {
+        this.appearance = appearance;
+    }
+
+    public String getOdorStrength() {
+        return odorStrength;
+    }
+
+    public void setOdorStrength(String odorStrength) {
+        this.odorStrength = odorStrength;
+    }
+
+    public String getProducingCountries() {
+        return producingCountries;
+    }
+
+    public void setProducingCountries(String producingCountries) {
+        this.producingCountries = producingCountries;
+    }
+
+    public String getTypicalVolatility() {
+        return typicalVolatility;
+    }
+
+    public void setTypicalVolatility(String typicalVolatility) {
+        this.typicalVolatility = typicalVolatility;
+    }
+
+    public String getEvolutionImmediate() {
+        return evolutionImmediate;
+    }
+
+    public void setEvolutionImmediate(String evolutionImmediate) {
+        this.evolutionImmediate = evolutionImmediate;
+    }
+
+    public String getEvolutionAfterHours() {
+        return evolutionAfterHours;
+    }
+
+    public void setEvolutionAfterHours(String evolutionAfterHours) {
+        this.evolutionAfterHours = evolutionAfterHours;
+    }
+
+    public String getEvolutionAfterDays() {
+        return evolutionAfterDays;
+    }
+
+    public void setEvolutionAfterDays(String evolutionAfterDays) {
+        this.evolutionAfterDays = evolutionAfterDays;
+    }
+
+    public String getFullExtractedText() {
+        return fullExtractedText;
+    }
+
+    public void setFullExtractedText(String fullExtractedText) {
+        this.fullExtractedText = fullExtractedText;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

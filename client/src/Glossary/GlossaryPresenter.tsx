@@ -7,7 +7,7 @@ export default function GlossaryPresenter() {
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4 text-center">Glossario delle Materie Prime</h1>
+      <h1 className="mb-4">Glossario delle Materie Prime</h1>
 
       <AlphabetFilter
         activeLetter={selectedLetter}
@@ -35,10 +35,8 @@ export default function GlossaryPresenter() {
                       {ingredient.name}
                     </h5>
                     <h6 className="card-subtitle mb-2 text-muted small">
-                      Famiglia:{" "}
-                      {ingredient.olfactoryFamily || "Non specificata"}
+                      Category: {ingredient.category || ""}
                     </h6>
-                    <p className="card-text">{ingredient.description}</p>
                   </div>
                 </div>
               </div>
