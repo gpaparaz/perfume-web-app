@@ -64,3 +64,63 @@ To run the full stack environment locally, the following prerequisites are requi
 
 
 > This project is developed for educational purposes to study modern enterprise architecture with Java while addressing data normalization challenges from heterogeneous sources.
+
+
+## Database Architecture & Schema
+
+The database (PostgreSQL) is structured to manage relationships between perfume brands, olfactory pyramids, accord intensities, and a comprehensive raw material glossary (*ingredients*).
+
+###  Entity-Relationship Overview
+
+
+```
+
+[Brands] 1 ──── N [Perfumes] 1 ──── N [Perfume Accords]
+│
+└──── N [Perfume Notes] N ──── 1 [Ingredients]
+
+```
+
+---
+
+###  Database Tables
+
+#### 1. `brands`
+Stores information about fragrance houses.
+* **`id`** (`INTEGER`, PK, Auto-increment): Unique brand identifier.
+* **`name`** (`VARCHAR(255)`): Brand name (e.g., *Afnan*, *Chanel*).
+
+#### 2. `perfumes`
+The core entity representing individual fragrances.
+* **`id`** (`INTEGER`, PK, Auto-increment): Unique perfume identifier.
+* **`brand_id`** (`INTEGER`, FK $\rightarrow$ `brands.id`): Associated brand.
+* **`title`** (`VARCHAR(255)`): Perfume title/name.
+* **`description`** (`TEXT`): Detailed fragrance description.
+* **`release_year`** (`INTEGER`): Launch year.
+* **`perfumer`** (`VARCHAR(255)`): Master perfumer(s) / Nose behind the fragrance.
+* **`created_at`** (`TIMESTAMP`): Record creation timestamp.
+
+#### 3. `perfume_accords`
+Defines the main dominant olfactory accords and their visual intensity.
+* **`id`** (`INTEGER`, PK, Auto-increment): Unique accord record identifier.
+* **`perfume_id`** (`INTEGER`, FK $\rightarrow$ `perfumes.id`): Associated perfume.
+* **`accord_name`** (`VARCHAR(100)`): Accord category (e.g., *citrus*, *woody*, *sweet*).
+* **`intensity_percentage`** (`NUMERIC(5,2)`): Relative dominance percentage.
+
+#### 4. `perfume_notes` (Junction Table / Olfactory Pyramid)
+Establishes the many-to-many relationship between fragrances and raw ingredients.
+* **`perfume_id`** (`INTEGER`, FK $\rightarrow$ `perfumes.id`): Associated perfume.
+* **`ingredient_id`** (`INTEGER`, FK $\rightarrow$ `ingredients.id`): Associated ingredient.
+* **`layer`** (`VARCHAR(50)`): Position within the pyramid (`top`, `heart`, `base`).
+
+#### 5. `ingredients` (Raw Material Glossary)
+Detailed technical and sensory profiles for raw materials.
+* **`id`** (`BIGINT`, PK, Auto-increment): Unique ingredient identifier.
+* **`name`** (`VARCHAR(255)`): Common name (e.g., *Bergamot*).
+* **`botanical_name`** (`VARCHAR(255)`): Scientific / Botanical classification.
+* **`category`** / **`subcategory`** (`VARCHAR(255)`): Classification taxonomy.
+* **`olfactory_family`** (`VARCHAR(255)`): Main scent family.
+* **`typical_volatility`** (`VARCHAR(255)`): Evaporation rate (Top, Heart, or Base note).
+* **`odor_strength`** (`VARCHAR(255)`): Sensory intensity rating.
+* **`evolution_immediate`** / **`evolution_after_hours`** / **`evolution_after_days`**: Sensory evolution over time.
+* **`short_description`** / **`description`** / **`appearance`** / **`producing_countries`**: Visual characteristics, origins, and descriptive notes.
