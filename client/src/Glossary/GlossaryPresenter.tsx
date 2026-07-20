@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import AlphabetFilter from "../CustomComponents/AlphabetFilter";
 import { useIngredients } from "../hooks/useIngredients";
 
 export default function GlossaryPresenter() {
   const { ingredients, selectedLetter, loading, error, toggleLetter } =
     useIngredients();
+  const navigate = useNavigate();
 
   return (
     <div className="container mt-4">
@@ -28,7 +30,12 @@ export default function GlossaryPresenter() {
         <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
           {ingredients.length > 0 ? (
             ingredients.map((ingredient) => (
-              <div className="col" key={ingredient.id}>
+              <div
+                className="col"
+                key={ingredient.id}
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/glossary/${ingredient.id}`)}
+              >
                 <div className="card h-100 shadow-sm">
                   <div className="card-body">
                     <h5 className="card-title text-capitalize">
