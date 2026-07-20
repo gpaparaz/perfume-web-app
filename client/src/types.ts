@@ -2,22 +2,23 @@
 export interface IngredientSummary {
   id: number;
   name: string;
-  category: string;
-  subcategory: string;
-  typicalVolatility: string;
+  category: string | null;
+  subcategory: string | null;
+  typicalVolatility: string | null;
 }
 
 // Interfaccia completa per l'inspect (scheda tecnica)
 export interface Ingredient extends IngredientSummary {
-  shortDescription?: string;
-  botanicalName?: string;
-  appearance?: string;
-  odorStrength?: string;
-  producingCountries?: string;
-  evolutionImmediate?: string;
-  evolutionAfterHours?: string;
-  evolutionAfterDays?: string;
-  fullExtractedText?: string;
-  sourceUrl?: string;
+  fromGlossary?: boolean;
+  shortDescription?: string | null;
+  botanicalName?: string | null;
+  appearance?: string | null;
+  odorStrength?: string | null;
+  producingCountries?: string | null;
+  evolutionImmediate?: string | null;
+  evolutionAfterHours?: string | null;
+  evolutionAfterDays?: string | null;
+  fullExtractedText?: string | null;
+  sourceUrl?: string | null;
   createdAt?: string;
 }
