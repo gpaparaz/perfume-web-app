@@ -66,61 +66,135 @@ To run the full stack environment locally, the following prerequisites are requi
 > This project is developed for educational purposes to study modern enterprise architecture with Java while addressing data normalization challenges from heterogeneous sources.
 
 
-## Database Architecture & Schema
+ ## Database Architecture & Schema
 
-The database (PostgreSQL) is structured to manage relationships between perfume brands, olfactory pyramids, accord intensities, and a comprehensive raw material glossary (*ingredients*).
+The database (PostgreSQL) is rebuilt from the three source datasets by `import_datasets.js`,
+which runs `schema.sql` — the **single source of truth for the schema** — before loading any data.
+Every dimension (brand, ingredient, accord) is deduplicated by a **normalized key**, so the same
+value written differently across sources (`Cedar` / `Cedarwood`, `W.Dressroom` / `W Dressroom`)
+collapses into a single row.
 
-###  Entity-Relationship Overview
+The schema is designed around four search axes:
 
+* **by brand**, **by ingredient**, **by accord** → id-based lookups (dimension tables + foreign keys);
+* **by name** → text search (trigram indexes on `perfumes.title` and `ingredients.name`).
 
+### Entity-Relationship Overview
+
+```mermaid
+erDiagram
+    brands       ||--o{ perfumes           : has
+    perfumes     ||--o{ perfume_notes      : "pyramid"
+    ingredients  ||--o{ perfume_notes      : "used in"
+    perfumes     ||--o{ perfume_accords    : "ranked accords"
+    accords      ||--o{ perfume_accords    : "appears in"
+    ingredients  ||--o{ ingredient_aliases : "known as"
 ```
 
-[Brands] 1 ──── N [Perfumes] 1 ──── N [Perfume Accords]
-│
-└──── N [Perfume Notes] N ──── 1 [Ingredients]
-
-```
-
----
-
-###  Database Tables
+### Tables
 
 #### 1. `brands`
-Stores information about fragrance houses.
-* **`id`** (`INTEGER`, PK, Auto-increment): Unique brand identifier.
-* **`name`** (`VARCHAR(255)`): Brand name (e.g., *Afnan*, *Chanel*).
+Fragrance houses, deduplicated across sources.
 
-#### 2. `perfumes`
-The core entity representing individual fragrances.
-* **`id`** (`INTEGER`, PK, Auto-increment): Unique perfume identifier.
-* **`brand_id`** (`INTEGER`, FK $\rightarrow$ `brands.id`): Associated brand.
-* **`title`** (`VARCHAR(255)`): Perfume title/name.
-* **`description`** (`TEXT`): Detailed fragrance description.
-* **`release_year`** (`INTEGER`): Launch year.
-* **`perfumer`** (`VARCHAR(255)`): Master perfumer(s) / Nose behind the fragrance.
-* **`created_at`** (`TIMESTAMP`): Record creation timestamp.
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `BIGINT` | PK, identity |
+| `name` | `VARCHAR(255)` | Display name (first spelling seen wins) |
+| `name_normalized` | `VARCHAR(255)` | **UNIQUE** — dedup key |
+| `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
 
-#### 3. `perfume_accords`
-Defines the main dominant olfactory accords and their visual intensity.
-* **`id`** (`INTEGER`, PK, Auto-increment): Unique accord record identifier.
-* **`perfume_id`** (`INTEGER`, FK $\rightarrow$ `perfumes.id`): Associated perfume.
-* **`accord_name`** (`VARCHAR(100)`): Accord category (e.g., *citrus*, *woody*, *sweet*).
-* **`intensity_percentage`** (`NUMERIC(5,2)`): Relative dominance percentage.
+#### 2. `ingredients` (Raw-Material & Note Vocabulary)
+Canonical list of raw materials / olfactory notes. Rich rows come from the Première Peau glossary
+(`from_glossary = true`); thin rows are created on demand for notes that appear only in
+Fragrantica / Parfumo.
 
-#### 4. `perfume_notes` (Junction Table / Olfactory Pyramid)
-Establishes the many-to-many relationship between fragrances and raw ingredients.
-* **`perfume_id`** (`INTEGER`, FK $\rightarrow$ `perfumes.id`): Associated perfume.
-* **`ingredient_id`** (`INTEGER`, FK $\rightarrow$ `ingredients.id`): Associated ingredient.
-* **`layer`** (`VARCHAR(50)`): Position within the pyramid (`top`, `heart`, `base`).
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `BIGINT` | PK, identity |
+| `name` | `VARCHAR(255)` | Canonical display name (e.g. *Bergamot*) |
+| `name_normalized` | `VARCHAR(255)` | **UNIQUE** — dedup key |
+| `category` / `subcategory` | `VARCHAR(255)` | Classification taxonomy |
+| `botanical_name` | `VARCHAR(255)` | Scientific / botanical name |
+| `typical_volatility` | `VARCHAR(255)` | Top / Heart / Base tendency |
+| `odor_strength` | `VARCHAR(255)` | Sensory intensity rating |
+| `short_description` / `appearance` / `producing_countries` | `TEXT` | Descriptive fields |
+| `evolution_immediate` / `evolution_after_hours` / `evolution_after_days` | `TEXT` | Sensory evolution over time |
+| `full_extracted_text` | `TEXT` | Full glossary text |
+| `source_url` | `TEXT` | Origin URL |
+| `from_glossary` | `BOOLEAN` | `true` = rich glossary entry, `false` = note-only entry |
+| `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
 
-#### 5. `ingredients` (Raw Material Glossary)
-Detailed technical and sensory profiles for raw materials.
-* **`id`** (`BIGINT`, PK, Auto-increment): Unique ingredient identifier.
-* **`name`** (`VARCHAR(255)`): Common name (e.g., *Bergamot*).
-* **`botanical_name`** (`VARCHAR(255)`): Scientific / Botanical classification.
-* **`category`** / **`subcategory`** (`VARCHAR(255)`): Classification taxonomy.
-* **`olfactory_family`** (`VARCHAR(255)`): Main scent family.
-* **`typical_volatility`** (`VARCHAR(255)`): Evaporation rate (Top, Heart, or Base note).
-* **`odor_strength`** (`VARCHAR(255)`): Sensory intensity rating.
-* **`evolution_immediate`** / **`evolution_after_hours`** / **`evolution_after_days`**: Sensory evolution over time.
-* **`short_description`** / **`description`** / **`appearance`** / **`producing_countries`**: Visual characteristics, origins, and descriptive notes.
+#### 3. `ingredient_aliases`
+Maps every surface form of an ingredient to its canonical row, so a search-by-note resolves
+any spelling (`cedar`, `cedarwood`, `sicilian bergamot`) to a single ingredient id.
+
+| Column | Type | Notes |
+|---|---|---|
+| `alias_normalized` | `VARCHAR(255)` | PK — a normalized surface form |
+| `ingredient_id` | `BIGINT` | FK → `ingredients.id` (`ON DELETE CASCADE`) |
+
+#### 4. `accords`
+Dimension table for the main olfactory accords, so accords are an **id-based** search axis
+(symmetric to brands and ingredients).
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `BIGINT` | PK, identity |
+| `name` | `VARCHAR(100)` | Display name (e.g. *citrus*, *woody*) |
+| `name_normalized` | `VARCHAR(100)` | **UNIQUE** — dedup key |
+
+#### 5. `perfumes`
+One row per real fragrance, deduplicated across sources by `(brand_id, title_normalized)`.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `BIGINT` | PK, identity |
+| `brand_id` | `BIGINT` | FK → `brands.id` (`ON DELETE CASCADE`) |
+| `title` | `VARCHAR(255)` | Perfume name |
+| `title_normalized` | `VARCHAR(255)` | Dedup key |
+| `description` | `TEXT` | Free-text description (from Fragrantica) |
+| `release_year` | `INTEGER` | Launch year (from Parfumo) |
+| `perfumer` | `VARCHAR(255)` | Nose behind the fragrance (from Parfumo) |
+| `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
+| | | **UNIQUE** `(brand_id, title_normalized)` |
+
+#### 6. `perfume_notes` (Olfactory Pyramid — junction)
+Many-to-many link between perfumes and ingredients. The **UNIQUE** constraint is what actually
+prevents duplicate links.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `BIGINT` | PK, identity |
+| `perfume_id` | `BIGINT` | FK → `perfumes.id` (`ON DELETE CASCADE`) |
+| `ingredient_id` | `BIGINT` | FK → `ingredients.id` (`ON DELETE CASCADE`) |
+| `layer` | `VARCHAR(20)` | `top` \| `heart` \| `base` |
+| | | **UNIQUE** `(perfume_id, ingredient_id, layer)` |
+
+#### 7. `perfume_accords` (Ranked Accords — junction)
+Many-to-many link between perfumes and accords. `rank` preserves the dominance order reported
+by the sources (**1 = most dominant**); there is no fabricated percentage.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `BIGINT` | PK, identity |
+| `perfume_id` | `BIGINT` | FK → `perfumes.id` (`ON DELETE CASCADE`) |
+| `accord_id` | `BIGINT` | FK → `accords.id` (`ON DELETE CASCADE`) |
+| `rank` | `SMALLINT` | Dominance position, 1 = strongest |
+| | | **UNIQUE** `(perfume_id, accord_id)` |
+
+### Indexes
+
+* `idx_perfume_notes_ingredient` on `perfume_notes(ingredient_id)` — search perfumes by note;
+* `idx_perfume_accords_accord` on `perfume_accords(accord_id)` — search perfumes by accord;
+* `idx_perfumes_brand` on `perfumes(brand_id)` — list a brand's perfumes;
+* GIN trigram indexes on `perfumes.title` and `ingredients.name` (extension `pg_trgm`) — name search.
+
+### How the data is loaded
+
+`import_datasets.js` rebuilds everything from scratch on every run (`schema.sql` drops and
+recreates all tables — the data is 100% re-derivable from the source files), in three stages:
+
+1. **Première Peau glossary** → canonical, rich `ingredients`;
+2. **Parfumo** → `perfumes`, notes (authoritative source), and accords;
+3. **Fragrantica** → merges into existing perfumes, fills `description`, adds accords, and adds
+    notes only as a fallback for perfumes that still have none.
