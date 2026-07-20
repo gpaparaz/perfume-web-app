@@ -17,12 +17,17 @@ public class Perfume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "brand_id")
-    @ManyToOne
-    private Long brandId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false)
+    @JsonIgnoreProperties("perfumes")
+    private Brand brand;
 
     private String title;
 
+    @Column(name = "title_normalized", nullable = false)
+    private String titleNormalized;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "release_year")
@@ -58,6 +63,14 @@ public class Perfume {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getTitleNormalized() {
+      return titleNormalized;
+    }
+
+    public void setTitleNormalized(String titleNormalized) {
+        this.titleNormalized = titleNormalized;
     }
 
     public String getDescription() {

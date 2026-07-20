@@ -16,8 +16,14 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
+
+    @Column(name = "name_normalized", nullable = false, unique = true)
+    private String nameNormalized;
+
+    @Column(name = "from_glossary", nullable = false)
+    private boolean fromGlossary;
 
     private String category;
     private String subcategory;
@@ -74,6 +80,22 @@ public class Ingredient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNameNormalized() {
+      return nameNormalized;
+    }
+
+    public void setNameNormalized(String nameNormalized) {
+        this.nameNormalized = nameNormalized;
+    }
+
+    public boolean isFromGlossary() {
+        return fromGlossary;
+    }
+
+    public void setFromGlossary(boolean fromGlossary) {
+        this.fromGlossary = fromGlossary;
     }
 
     public String getCategory() {

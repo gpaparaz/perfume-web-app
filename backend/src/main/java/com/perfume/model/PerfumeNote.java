@@ -37,8 +37,6 @@ public class PerfumeNote {
     public PerfumeNote() {
     }
 
-    // --- GETTER E SETTER ---
-
     public Long getId() {
         return id;
     }
