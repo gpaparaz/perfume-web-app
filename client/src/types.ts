@@ -22,3 +22,18 @@ export interface Ingredient extends IngredientSummary {
   sourceUrl?: string | null;
   createdAt?: string;
 }
+
+export interface Brand {
+  id: number;
+  name: string;
+}
+
+export interface PartialPerfumes {
+  id: number;
+  brandId: number;
+  title: string;
+}
+
+export interface BrandWithPerfumes extends Brand {
+  perfumes: PartialPerfumes[];
+}

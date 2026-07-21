@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
+import BrandPresenter from "./Fragrances/BrandPresenter.tsx";
 import GlossaryPresenter from "./Glossary/GlossaryPresenter.tsx";
 import HomeDashboard from "./Home/HomeDashboard.tsx";
 import IngredientInspect from "./IngredientInspect/IngredientInspect.tsx";
@@ -17,6 +18,7 @@ if (root) {
           <Route index element={<HomeDashboard />} />
           <Route path="glossary" element={<GlossaryPresenter />} />
           <Route path="/glossary/:id" element={<IngredientInspect />} />
+          <Route path="fragrances" element={<BrandPresenter />} />
         </Route>
       </Routes>
     </BrowserRouter>
