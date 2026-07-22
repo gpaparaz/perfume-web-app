@@ -12,11 +12,13 @@ export const useBrands = () => {
     const fetchAll = async () => {
       setLoading(true);
       try {
-        const response = await api.get<BrandWithPerfumes[]>("/");
+        const response = await api.get<BrandWithPerfumes[]>("/perfumes");
+
+        console.log(response.data);
 
         setAllBrands(response.data);
       } catch (err) {
-        console.error("Errore nel recupero del glossario:", err);
+        console.error("Errore nel recupero dei brand:", err);
         setError("Impossibile caricare i brand. Riprova.");
       } finally {
         setLoading(false);

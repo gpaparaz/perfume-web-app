@@ -77,6 +77,14 @@ public class Perfume {
         this.description = description;
     }
 
+    public Integer getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
     public String getPerfumer() {
         return perfumer;
     }

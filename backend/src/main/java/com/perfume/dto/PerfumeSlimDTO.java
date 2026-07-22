@@ -1,5 +1,7 @@
 package com.perfume.dto;
 
+import com.perfume.model.Perfume;
+
 public class PerfumeSlimDTO {
     private Long id;
     private String title;
@@ -10,6 +12,12 @@ public class PerfumeSlimDTO {
         this.id = id;
         this.title = title;
         this.releaseYear = releaseYear;
+    }
+
+    public PerfumeSlimDTO(Perfume perfume) {
+        this.id = perfume.getId();
+        this.title = perfume.getTitle();
+        this.releaseYear = perfume.getReleaseYear();
     }
 
     public Long getId() {

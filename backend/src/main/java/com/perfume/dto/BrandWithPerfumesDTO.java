@@ -2,10 +2,26 @@ package com.perfume.dto;
 
 import java.util.List;
 
+import com.perfume.model.Brand;
+
 public class BrandWithPerfumesDTO {
     private Long id;
     private String name;
     private List<PerfumeSlimDTO> perfumes;
+
+    // Costruttore per la conversione dall'entità
+    public BrandWithPerfumesDTO(Brand brand) {
+        this.id = brand.getId();
+        this.name = brand.getName();
+
+        // Se brand.getPerfumes() contiene le entità Perfume, le mappiamo (se usate dei
+        // DTO per i profumi):
+        if (brand.getPerfumes() != null) {
+            this.perfumes = brand.getPerfumes().stream()
+                    .map(PerfumeSlimDTO::new)
+                    .toList();
+        }
+    }
 
     public Long getId() {
         return id;
