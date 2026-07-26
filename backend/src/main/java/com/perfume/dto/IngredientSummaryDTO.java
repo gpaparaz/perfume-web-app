@@ -6,6 +6,7 @@ public class IngredientSummaryDTO {
     private String category;
     private String subcategory;
     private String typicalVolatility;
+    private String imageUrl;
 
     // 1. Costruttore vuoto di default (Essenziale come salvagente per Hibernate)
     public IngredientSummaryDTO() {
@@ -13,12 +14,14 @@ public class IngredientSummaryDTO {
 
     // 2. Costruttore completo
     // Ingredient.java
-    public IngredientSummaryDTO(Long id, String name, String category, String subcategory, String typicalVolatility) {
+    public IngredientSummaryDTO(Long id, String name, String category, String subcategory, String typicalVolatility,
+            String imageUrl) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.subcategory = subcategory;
         this.typicalVolatility = typicalVolatility;
+        this.imageUrl = imageUrl;
     }
 
     // Getter
@@ -60,5 +63,13 @@ public class IngredientSummaryDTO {
 
     public void setTypicalVolatility(String typicalVolatility) {
         this.typicalVolatility = typicalVolatility;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

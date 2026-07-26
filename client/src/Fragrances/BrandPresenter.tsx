@@ -8,7 +8,7 @@ export default function BrandPresenter() {
   console.log(allBrands);
 
   return (
-    <>
+    <div className="container">
       {loading && (
         <div className="text-center my-5">
           <div className="spinner-border text-primary" role="status">
@@ -56,7 +56,7 @@ export default function BrandPresenter() {
                             key={fragrance.id}
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                              navigate(`/fragrances/${perfume.id}`)
+                              navigate(`/fragrances  /${perfume.id}`)
                             }
                           >
                             <div className="card h-100 shadow-sm">
@@ -80,6 +80,6 @@ export default function BrandPresenter() {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

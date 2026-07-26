@@ -5,6 +5,7 @@ export interface IngredientSummary {
   category: string | null;
   subcategory: string | null;
   typicalVolatility: string | null;
+  imageUrl: string;
 }
 
 // Interfaccia completa per l'inspect (scheda tecnica)
@@ -32,6 +33,7 @@ export interface PartialPerfumes {
   id: number;
   brandId: number;
   title: string;
+  imageUrl: string;
 }
 
 export interface BrandWithPerfumes extends Brand {

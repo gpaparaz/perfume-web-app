@@ -58,6 +58,9 @@ public class Ingredient {
     @Column(name = "full_extracted_text", columnDefinition = "TEXT")
     private String fullExtractedText;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -83,7 +86,7 @@ public class Ingredient {
     }
 
     public String getNameNormalized() {
-      return nameNormalized;
+        return nameNormalized;
     }
 
     public void setNameNormalized(String nameNormalized) {
@@ -192,6 +195,14 @@ public class Ingredient {
 
     public void setFullExtractedText(String fullExtractedText) {
         this.fullExtractedText = fullExtractedText;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public LocalDateTime getCreatedAt() {

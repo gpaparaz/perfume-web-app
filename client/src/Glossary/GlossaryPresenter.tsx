@@ -38,6 +38,14 @@ export default function GlossaryPresenter() {
               >
                 <div className="card h-100 shadow-sm">
                   <div className="card-body">
+                    <img
+                      src={ingredient.imageUrl}
+                      style={{
+                        height: "100px",
+                        width: "100px",
+                        objectFit: "cover",
+                      }}
+                    />
                     <h5 className="card-title text-capitalize">
                       {ingredient.name}
                     </h5>
