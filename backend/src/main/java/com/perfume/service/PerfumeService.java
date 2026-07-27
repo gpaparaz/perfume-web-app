@@ -15,9 +15,9 @@ public class PerfumeService {
     @Autowired
     private BrandRepository brandRepository;
 
-    public List<BrandWithPerfumesDTO> getAllBrandsWithPerfumes(String litter) {
-        if (litter != null && !litter.trim().isEmpty()) {
-            List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(litter.trim());
+    public List<BrandWithPerfumesDTO> getAllBrandsWithPerfumes(String letter) {
+        if (letter != null && !letter.trim().isEmpty()) {
+            List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(letter.trim());
 
             // 2. Converte ogni Brand nel suo DTO corrispondente
             return brands.stream()
@@ -25,7 +25,7 @@ public class PerfumeService {
                     .toList();
         }
         // 1. Recupera la lista di entità Brand dal DB
-        List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(litter);
+        List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(letter);
 
         // 2. Converte ogni Brand nel suo DTO corrispondente
         return brands.stream()

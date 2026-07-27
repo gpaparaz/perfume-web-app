@@ -21,9 +21,9 @@ public class PerfumeController {
     @Autowired
     private PerfumeService perfumeService;
 
-    @GetMapping("{litter}")
-    public ResponseEntity<List<BrandWithPerfumesDTO>> getBrandWithPerfumes(@PathVariable String litter) {
-        return ResponseEntity.ok(perfumeService.getAllBrandsWithPerfumes(litter));
+    @GetMapping("{letter}")
+    public ResponseEntity<List<BrandWithPerfumesDTO>> getBrandWithPerfumes(@PathVariable String letter) {
+        return ResponseEntity.ok(perfumeService.getAllBrandsWithPerfumes(letter));
     }
 
 }

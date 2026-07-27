@@ -10,11 +10,11 @@ export const useBrands = (initialLetter: string = "A") => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAll = async (selectedLetter: string) => {
+    const fetchAll = async (letter: string) => {
       setLoading(true);
       try {
         const response = await api.get<BrandWithPerfumes[]>(
-          `/perfumes/litter:${selectedLetter}`
+          `/perfumes/${letter}`
         );
 
         console.log(response.data);
@@ -28,7 +28,7 @@ export const useBrands = (initialLetter: string = "A") => {
       }
     };
     fetchAll(selectedLetter);
-  }, []);
+  }, [selectedLetter]);
 
   return { loading, allBrands, error, selectedLetter, setSelectedLetter };
 };
