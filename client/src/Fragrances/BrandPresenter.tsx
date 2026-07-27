@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import AlphabetFilter from "../CustomComponents/AlphabetFilter";
 import { useBrands } from "../hooks/useBrands";
 
 export default function BrandPresenter() {
-  const { allBrands, loading, error } = useBrands();
+  const { allBrands, loading, error, selectedLetter, setSelectedLetter } =
+    useBrands();
   const navigate = useNavigate();
 
   console.log(allBrands);
@@ -20,6 +22,11 @@ export default function BrandPresenter() {
       {error && <div className="alert alert-danger text-center">{error}</div>}
       {!loading && !error && (
         <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+          <AlphabetFilter
+            activeLetter={selectedLetter}
+            onLetterSelect={setSelectedLetter}
+          />
+
           {allBrands.length > 0 ? (
             allBrands.map((perfume) => {
               // Generiamo ID univoci per ogni Brand
@@ -59,12 +66,18 @@ export default function BrandPresenter() {
                               navigate(`/fragrances  /${perfume.id}`)
                             }
                           >
-                            <div className="card h-100 shadow-sm">
-                              <h4>{fragrance.title}</h4>
-                              <div className="card-body">
-                                <h5 className="card-title text-capitalize">
-                                  {fragrance.title}
-                                </h5>
+                            <div className="card h-100 shadow-md d-flex flex-row">
+                              <div>
+                                <img
+                                  style={{ width: "50px", height: "50px" }}
+                                  src={fragrance.imageUrl}
+                                />
+                              </div>
+                              <div>
+                                <h5>{fragrance.title}</h5>
+                                <div className="card-body">
+                                  <span>{fragrance.releaseYear}</span>
+                                </div>
                               </div>
                             </div>
                           </div>

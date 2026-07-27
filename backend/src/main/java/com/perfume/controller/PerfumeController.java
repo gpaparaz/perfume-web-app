@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,9 +21,9 @@ public class PerfumeController {
     @Autowired
     private PerfumeService perfumeService;
 
-    @GetMapping
-    public ResponseEntity<List<BrandWithPerfumesDTO>> getBrandWithPerfumes() {
-        return ResponseEntity.ok(perfumeService.getAllBrandsWithPerfumes());
+    @GetMapping("{litter}")
+    public ResponseEntity<List<BrandWithPerfumesDTO>> getBrandWithPerfumes(@PathVariable String litter) {
+        return ResponseEntity.ok(perfumeService.getAllBrandsWithPerfumes(litter));
     }
 
 }

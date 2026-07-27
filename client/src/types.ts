@@ -34,6 +34,7 @@ export interface PartialPerfumes {
   brandId: number;
   title: string;
   imageUrl: string;
+  releaseYear: string;
 }
 
 export interface BrandWithPerfumes extends Brand {

@@ -15,9 +15,17 @@ public class PerfumeService {
     @Autowired
     private BrandRepository brandRepository;
 
-    public List<BrandWithPerfumesDTO> getAllBrandsWithPerfumes() {
+    public List<BrandWithPerfumesDTO> getAllBrandsWithPerfumes(String litter) {
+        if (litter != null && !litter.trim().isEmpty()) {
+            List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(litter.trim());
+
+            // 2. Converte ogni Brand nel suo DTO corrispondente
+            return brands.stream()
+                    .map(BrandWithPerfumesDTO::new)
+                    .toList();
+        }
         // 1. Recupera la lista di entità Brand dal DB
-        List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes();
+        List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(litter);
 
         // 2. Converte ogni Brand nel suo DTO corrispondente
         return brands.stream()
