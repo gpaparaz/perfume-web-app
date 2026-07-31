@@ -112,4 +112,12 @@ public class Perfume {
         this.createdAt = createdAt;
     }
 
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
 }

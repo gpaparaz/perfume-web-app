@@ -4,10 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.perfume.dto.BrandWithPerfumesDTO;
+import com.perfume.dto.PerfumeDetailDTO;
 import com.perfume.model.Brand;
+import com.perfume.model.Perfume;
 import com.perfume.repository.BrandRepository;
+import com.perfume.repository.PerfumeAccordRepository;
+import com.perfume.repository.PerfumeNoteRepository;
+import com.perfume.repository.PerfumeRepository;
 
 @Service
 public class PerfumeService {
@@ -43,12 +49,13 @@ public class PerfumeService {
     @Transactional(readOnly = true)
     public PerfumeDetailDTO getPerfumeDetail(Long id) {
         Perfume p = perfumeRepository.findById(id).orElse(null);
-        if (p == null) return null;
+        if (p == null)
+            return null;
         return PerfumeDetailDTO.from(
                 p,
                 perfumeNoteRepository.findByPerfume_Id(id),
 
-        perfumeAccordRepository.findByPerfume_IdOrderByRankAsc(id));
+                perfumeAccordRepository.findByPerfume_IdOrderByRankAsc(id));
     }
 
 }
