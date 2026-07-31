@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
 import BrandPresenter from "./Fragrances/BrandPresenter.tsx";
+import FragranceInspect from "./Fragrances/FragranceInspect.tsx";
 import GlossaryPresenter from "./Glossary/GlossaryPresenter.tsx";
 import HomeDashboard from "./Home/HomeDashboard.tsx";
 import IngredientInspect from "./IngredientInspect/IngredientInspect.tsx";
