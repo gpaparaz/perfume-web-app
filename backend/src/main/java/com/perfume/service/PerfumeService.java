@@ -15,6 +15,13 @@ public class PerfumeService {
     @Autowired
     private BrandRepository brandRepository;
 
+    @Autowired
+    private PerfumeRepository perfumeRepository;
+    @Autowired
+    private PerfumeNoteRepository perfumeNoteRepository;
+    @Autowired
+    private PerfumeAccordRepository perfumeAccordRepository;
+
     public List<BrandWithPerfumesDTO> getAllBrandsWithPerfumes(String letter) {
         if (letter != null && !letter.trim().isEmpty()) {
             List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(letter.trim());
@@ -31,6 +38,17 @@ public class PerfumeService {
         return brands.stream()
                 .map(BrandWithPerfumesDTO::new)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public PerfumeDetailDTO getPerfumeDetail(Long id) {
+        Perfume p = perfumeRepository.findById(id).orElse(null);
+        if (p == null) return null;
+        return PerfumeDetailDTO.from(
+                p,
+                perfumeNoteRepository.findByPerfume_Id(id),
+
+        perfumeAccordRepository.findByPerfume_IdOrderByRankAsc(id));
     }
 
 }

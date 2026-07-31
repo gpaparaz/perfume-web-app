@@ -21,6 +21,14 @@ public class PerfumeController {
     @Autowired
     private PerfumeService perfumeService;
 
+    @GetMapping("/detail/{id}")
+      public ResponseEntity<PerfumeDetailDTO>
+  getPerfumeDetail(@PathVariable Long id) {
+          PerfumeDetailDTO d = perfumeService.getPerfumeDetail(id);
+          return d == null ? ResponseEntity.notFound().build() :
+  ResponseEntity.ok(d);
+      }
+
     @GetMapping("{letter}")
     public ResponseEntity<List<BrandWithPerfumesDTO>> getBrandWithPerfumes(@PathVariable String letter) {
         return ResponseEntity.ok(perfumeService.getAllBrandsWithPerfumes(letter));
