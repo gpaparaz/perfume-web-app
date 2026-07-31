@@ -21,17 +21,17 @@ export default function BrandPresenter() {
 
       {error && <div className="alert alert-danger text-center">{error}</div>}
       {!loading && !error && (
-        <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        <>
           <AlphabetFilter
             activeLetter={selectedLetter}
             onLetterSelect={setSelectedLetter}
           />
-
-          {allBrands.length > 0 ? (
-            allBrands.map((perfume) => {
-              // Generiamo ID univoci per ogni Brand
-              const collapseId = `collapse-brand-${perfume.id}`;
-              const headerId = `heading-brand-${perfume.id}`;
+          <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+            {allBrands.length > 0 ? (
+              allBrands.map((perfume) => {
+                // Generiamo ID univoci per ogni Brand
+                const collapseId = `collapse-brand-${perfume.id}`;
+                const headerId = `heading-brand-${perfume.id}`;
 
               return (
                 <div

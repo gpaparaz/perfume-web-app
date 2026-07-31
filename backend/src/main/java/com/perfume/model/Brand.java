@@ -23,6 +23,9 @@ public class Brand {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "logo_url")
+    private String logoUrl;
+
     // UN brand possiede MOLTI profumi
     // 'mappedBy = "brand"' fa riferimento al nome del campo 'brand' nella classe
     // Perfume
@@ -51,5 +54,13 @@ public class Brand {
 
     public void setPerfumes(List<Perfume> perfumes) {
         this.perfumes = perfumes;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

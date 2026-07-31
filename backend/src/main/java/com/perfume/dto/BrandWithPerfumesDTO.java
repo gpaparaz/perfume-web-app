@@ -8,11 +8,13 @@ public class BrandWithPerfumesDTO {
     private Long id;
     private String name;
     private List<PerfumeSlimDTO> perfumes;
+    private String logoUrl;
 
     // Costruttore per la conversione dall'entità
     public BrandWithPerfumesDTO(Brand brand) {
         this.id = brand.getId();
         this.name = brand.getName();
+        this.logoUrl = brand.getLogoUrl();
 
         // Se brand.getPerfumes() contiene le entità Perfume, le mappiamo (se usate dei
         // DTO per i profumi):
@@ -51,6 +53,14 @@ public class BrandWithPerfumesDTO {
         this.id = id;
         this.name = name;
         this.perfumes = perfumes;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 
 }
