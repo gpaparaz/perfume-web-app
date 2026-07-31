@@ -62,9 +62,7 @@ export default function BrandPresenter() {
                             className="col"
                             key={fragrance.id}
                             style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              navigate(`/fragrances/${fragrance.id}`)
-                            }
+                            onClick={() => navigate(`/fragrances/${fragrance.id}`)}
                           >
                             <div className="card h-100 shadow-md d-flex flex-row">
                               <div>

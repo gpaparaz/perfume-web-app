@@ -20,6 +20,7 @@ if (root) {
           <Route path="glossary" element={<GlossaryPresenter />} />
           <Route path="/glossary/:id" element={<IngredientInspect />} />
           <Route path="fragrances" element={<BrandPresenter />} />
+          <Route path="/fragrances/:id" element={<FragranceInspect />} />
         </Route>
       </Routes>
     </BrowserRouter>

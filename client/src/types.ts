@@ -40,3 +40,31 @@ export interface PartialPerfumes {
 export interface BrandWithPerfumes extends Brand {
   perfumes: PartialPerfumes[];
 }
+
+export interface NoteDetail {
+  ingredientId: number;
+  name: string;
+  imageUrl: string | null;
+  fromGlossary: boolean;
+}
+
+export interface AccordDetail {
+  id: number;
+  name: string;
+  rank: number;
+}
+
+export interface FragranceDetail {
+  id: number;
+  title: string;
+  description: string | null;
+  releaseYear: number | null;
+  perfumer: string | null;
+  imageUrl: string | null;
+  brandId: number;
+  brandName: string;
+  top: NoteDetail[];
+  heart: NoteDetail[];
+  base: NoteDetail[];
+  accords: AccordDetail[];
+}
