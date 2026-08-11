@@ -89,13 +89,17 @@ export default function HeaderSearchBar() {
   }
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-md">
-      <div className="flex items-stretch rounded-lg border border-zinc-300 bg-white overflow-hidden focus-within:ring-2 focus-within:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600">
+    <div
+      ref={containerRef}
+      className="position-relative w-100"
+      style={{ maxWidth: "32rem" }}
+    >
+      <div className="input-group">
         <select
           value={mode}
           onChange={handleModeChange}
           aria-label="Cerca per"
-          className="shrink-0 border-r border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-700 text-sm px-2 text-zinc-700 dark:text-zinc-100 focus:outline-none"
+          className="form-select flex-grow-0 w-auto"
         >
           <option value="perfume">Profumo</option>
           <option value="ingredient">Ingrediente</option>
@@ -112,17 +116,14 @@ export default function HeaderSearchBar() {
               ? "Cerca un profumo..."
               : "Cerca un ingrediente..."
           }
-          className="flex-1 px-3 py-2 text-sm bg-transparent focus:outline-none dark:text-zinc-100"
+          className="form-control"
           aria-autocomplete="list"
           aria-expanded={isOpen}
         />
 
         {loading && (
-          <span
-            className="flex items-center px-3 text-xs text-zinc-400"
-            aria-hidden="true"
-          >
-            ...
+          <span className="input-group-text" aria-hidden="true">
+            <span className="spinner-border spinner-border-sm" role="status" />
           </span>
         )}
       </div>
@@ -130,50 +131,58 @@ export default function HeaderSearchBar() {
       {isOpen && results.length > 0 && (
         <ul
           role="listbox"
-          className="absolute z-20 mt-1 w-full max-h-80 overflow-y-auto rounded-lg border border-zinc-200 bg-white shadow-lg dark:bg-zinc-800 dark:border-zinc-600"
+          className="dropdown-menu show w-100 mt-1 shadow-sm"
+          style={{ maxHeight: "20rem", overflowY: "auto" }}
         >
           {results.map((item, i) => (
-            <li
-              key={item.id}
-              role="option"
-              aria-selected={i === activeIndex}
-              onMouseEnter={() => setActiveIndex(i)}
-              onClick={() => selectResult(item)}
-              className={`flex items-center gap-3 px-3 py-2 cursor-pointer text-sm ${
-                i === activeIndex ? "bg-zinc-100 dark:bg-zinc-700" : ""
-              }`}
-            >
-              {item.imageUrl && (
-                <img
-                  src={item.imageUrl}
-                  alt=""
-                  className="w-8 h-8 rounded object-cover shrink-0"
-                  loading="lazy"
-                />
-              )}
-              <div className="min-w-0">
-                {mode === "perfume" ? (
-                  <>
-                    <div className="truncate text-zinc-900 dark:text-zinc-100">
-                      {(item as PerfumeSearchResult).title}
-                    </div>
-                    <div className="truncate text-xs text-zinc-500 dark:text-zinc-400">
-                      {(item as PerfumeSearchResult).title}
-                    </div>
-                  </>
-                ) : (
-                  <div className="truncate text-zinc-900 dark:text-zinc-100">
-                    {(item as IngredientSummary).name}
-                  </div>
+            <li key={item.id}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={i === activeIndex}
+                onMouseEnter={() => setActiveIndex(i)}
+                onClick={() => selectResult(item)}
+                className={`dropdown-item d-flex align-items-center gap-2 ${
+                  i === activeIndex ? "active" : ""
+                }`}
+              >
+                {item.imageUrl && (
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    className="rounded flex-shrink-0"
+                    style={{
+                      width: "2rem",
+                      height: "2rem",
+                      objectFit: "cover",
+                    }}
+                    loading="lazy"
+                  />
                 )}
-              </div>
+                <span className="text-truncate">
+                  {mode === "perfume" ? (
+                    <>
+                      <div className="text-truncate">
+                        {(item as PerfumeSearchResult).title}
+                      </div>
+                      <div className="text-truncate small text-muted">
+                        {(item as PerfumeSearchResult).brandName}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-truncate">
+                      {(item as IngredientSummary).name}
+                    </div>
+                  )}
+                </span>
+              </button>
             </li>
           ))}
         </ul>
       )}
 
       {isOpen && !loading && error && (
-        <div className="absolute z-20 mt-1 w-full rounded-lg border border-zinc-200 bg-white shadow-lg px-3 py-2 text-sm text-red-500 dark:bg-zinc-800 dark:border-zinc-600">
+        <div className="dropdown-menu show w-100 mt-1 shadow-sm px-3 py-2 small text-danger">
           {error}
         </div>
       )}
@@ -183,7 +192,7 @@ export default function HeaderSearchBar() {
         !error &&
         results.length === 0 &&
         query.trim().length >= MIN_CHARS && (
-          <div className="absolute z-20 mt-1 w-full rounded-lg border border-zinc-200 bg-white shadow-lg px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-400">
+          <div className="dropdown-menu show w-100 mt-1 shadow-sm px-3 py-2 small text-muted">
             Nessun risultato per "{query}"
           </div>
         )}

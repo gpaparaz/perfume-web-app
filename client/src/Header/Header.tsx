@@ -40,7 +40,7 @@ export default function Header() {
             </ul>
           </div>
         </div>
-        <div style={{ width: "300px" }}>
+        <div style={{ width: "300px", marginRight: "20px" }}>
           <HeaderSearchBar />
         </div>
       </nav>

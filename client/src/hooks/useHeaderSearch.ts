@@ -26,10 +26,6 @@ export const useHeaderSearch = () => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Ricerca lato server, debounced. A differenza di useIngredients non
-  // teniamo l'intero dataset in memoria: con ~114k profumi non è
-  // percorribile scaricare tutto e filtrare in frontend, quindi ogni
-  // digitazione (dopo il debounce) è una vera chiamata API.
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -69,9 +65,6 @@ export const useHeaderSearch = () => {
     };
   }, [query, mode]);
 
-  // Cambiare modalità con una query già presente ha senso solo se
-  // invalidiamo i risultati della modalità precedente, altrimenti per un
-  // istante vedresti risultati "profumo" etichettati come "ingrediente".
   const changeMode = (newMode: SearchMode) => {
     setMode(newMode);
     setResults([]);
