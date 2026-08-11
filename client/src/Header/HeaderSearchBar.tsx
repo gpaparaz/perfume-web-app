@@ -2,9 +2,13 @@ import type { ChangeEvent, KeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHeaderSearch, type SearchMode } from "../hooks/useHeaderSearch";
-import type { IngredientSummary, PartialPerfumes } from "../types";
+import type {
+  IngredientSearchResult,
+  IngredientSummary,
+  PerfumeSearchResult,
+} from "../types";
 
-type SearchResult = PartialPerfumes | IngredientSummary;
+type SearchResult = PerfumeSearchResult | IngredientSearchResult;
 
 // Adjust these two if your routes are named differently.
 const DETAIL_PATH: Record<SearchMode, (id: number) => string> = {
@@ -104,7 +108,9 @@ export default function HeaderSearchBar() {
           onKeyDown={handleKeyDown}
           onFocus={() => results.length > 0 && setIsOpen(true)}
           placeholder={
-            mode === "perfume" ? "Cerca un profumo..." : "Cerca un ingrediente..."
+            mode === "perfume"
+              ? "Cerca un profumo..."
+              : "Cerca un ingrediente..."
           }
           className="flex-1 px-3 py-2 text-sm bg-transparent focus:outline-none dark:text-zinc-100"
           aria-autocomplete="list"
@@ -112,7 +118,10 @@ export default function HeaderSearchBar() {
         />
 
         {loading && (
-          <span className="flex items-center px-3 text-xs text-zinc-400" aria-hidden="true">
+          <span
+            className="flex items-center px-3 text-xs text-zinc-400"
+            aria-hidden="true"
+          >
             ...
           </span>
         )}
@@ -146,10 +155,10 @@ export default function HeaderSearchBar() {
                 {mode === "perfume" ? (
                   <>
                     <div className="truncate text-zinc-900 dark:text-zinc-100">
-                      {(item as PartialPerfumes).title}
+                      {(item as PerfumeSearchResult).title}
                     </div>
                     <div className="truncate text-xs text-zinc-500 dark:text-zinc-400">
-                      {(item as PartialPerfumes).brandName}
+                      {(item as PerfumeSearchResult).title}
                     </div>
                   </>
                 ) : (

@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import api from "../services/axios";
-import type { IngredientSummary, PartialPerfumes } from "../types";
+import type { IngredientSearchResult, PerfumeSearchResult } from "../types";
 
 export type SearchMode = "perfume" | "ingredient";
 
 const ENDPOINT: Record<SearchMode, string> = {
-  perfume: "/search/perfumes",
+  perfume: "/search/fragrances",
   ingredient: "/search/ingredients",
 };
 
@@ -14,7 +14,7 @@ const DEBOUNCE_MS = 300;
 const MIN_CHARS = 2;
 const LIMIT = 8;
 
-type SearchResult = PartialPerfumes | IngredientSummary;
+type SearchResult = PerfumeSearchResult | IngredientSearchResult;
 
 export const useHeaderSearch = () => {
   const [mode, setMode] = useState<SearchMode>("perfume");

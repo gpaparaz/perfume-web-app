@@ -68,3 +68,16 @@ export interface FragranceDetail {
   base: NoteDetail[];
   accords: AccordDetail[];
 }
+
+export interface PerfumeSearchResult {
+  id: number;
+  title: string;
+  brandName: string | null;
+  imageUrl: string | null;
+}
+
+export interface IngredientSearchResult {
+  id: number;
+  name: string;
+  imageUrl: string | null;
+}

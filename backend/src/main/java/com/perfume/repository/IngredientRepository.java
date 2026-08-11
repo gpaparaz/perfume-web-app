@@ -31,7 +31,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<IngredientSummaryDTO> findAllSummaries();
 
     @Query(value = """
-            SELECT id AS id, name AS name, image_url AS imageUrl
+            SELECT id AS id, name AS "name", image_url AS "imageUrl"
             FROM ingredients
             WHERE name ILIKE CONCAT(:q, '%') OR name % :q
             ORDER BY similarity(name, :q) DESC

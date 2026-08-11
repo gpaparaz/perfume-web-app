@@ -41,7 +41,7 @@ export default function Header() {
           </div>
         </div>
         <div style={{ width: "300px" }}>
-          <HeaderSearchBar></HeaderSearchBar>
+          <HeaderSearchBar />
         </div>
       </nav>
     </div>

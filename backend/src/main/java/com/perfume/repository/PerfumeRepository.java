@@ -22,7 +22,7 @@ public interface PerfumeRepository extends JpaRepository<Perfume, Long> {
     }
 
     @Query(value = """
-            SELECT p.id AS id, p.title AS title, b.name AS brandName, p.image_url AS imageUrl
+            SELECT p.id AS id, p.title AS title, b.name AS "brandName", p.image_url AS "imageUrl"
             FROM perfumes p
             JOIN brands b ON b.id = p.brand_id
             WHERE p.title ILIKE CONCAT(:q, '%') OR p.title % :q
