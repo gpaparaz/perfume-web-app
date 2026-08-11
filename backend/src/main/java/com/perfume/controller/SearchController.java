@@ -2,7 +2,6 @@ package com.perfume.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +14,6 @@ import com.perfume.repository.PerfumeRepository.PerfumeSearchResult;
 
 @RestController
 @RequestMapping("/api/search")
-@CrossOrigin(origins = "http://localhost:5173")
 public class SearchController {
 
     private final PerfumeRepository perfumeRepo;
