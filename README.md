@@ -101,6 +101,7 @@ Fragrance houses, deduplicated across sources.
 | `id` | `BIGINT` | PK, identity |
 | `name` | `VARCHAR(255)` | Display name (first spelling seen wins) |
 | `name_normalized` | `VARCHAR(255)` | **UNIQUE** — dedup key |
+| `logo_url` | `TEXT` | Brand logo, filled by `scrape_fragrantica_designers.js` + import enrichment stage |
 | `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
 
 #### 2. `ingredients` (Raw-Material & Note Vocabulary)
@@ -121,12 +122,14 @@ Fragrantica / Parfumo.
 | `evolution_immediate` / `evolution_after_hours` / `evolution_after_days` | `TEXT` | Sensory evolution over time |
 | `full_extracted_text` | `TEXT` | Full glossary text |
 | `source_url` | `TEXT` | Origin URL |
+| `image_url` | `TEXT` | Ingredient photo, filled by `scrape_fragrantica_notes.js` + import enrichment stage, matched via `ingredient_aliases` |
 | `from_glossary` | `BOOLEAN` | `true` = rich glossary entry, `false` = note-only entry |
 | `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
 
 #### 3. `ingredient_aliases`
 Maps every surface form of an ingredient to its canonical row, so a search-by-note resolves
-any spelling (`cedar`, `cedarwood`, `sicilian bergamot`) to a single ingredient id.
+any spelling (`cedar`, `cedarwood`, `sicilian bergamot`) to a single ingredient id. Also used
+to resolve scraped ingredient-photo names onto the right canonical row.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -155,6 +158,7 @@ One row per real fragrance, deduplicated across sources by `(brand_id, title_nor
 | `description` | `TEXT` | Free-text description (from Fragrantica) |
 | `release_year` | `INTEGER` | Launch year (from Parfumo) |
 | `perfumer` | `VARCHAR(255)` | Nose behind the fragrance (from Parfumo) |
+| `image_url` | `TEXT` | Perfume photo, derived directly from the Fragrantica perfume-page URL (numeric id) — no scraping needed |
 | `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
 | | | **UNIQUE** `(brand_id, title_normalized)` |
 
@@ -187,14 +191,45 @@ by the sources (**1 = most dominant**); there is no fabricated percentage.
 * `idx_perfume_notes_ingredient` on `perfume_notes(ingredient_id)` — search perfumes by note;
 * `idx_perfume_accords_accord` on `perfume_accords(accord_id)` — search perfumes by accord;
 * `idx_perfumes_brand` on `perfumes(brand_id)` — list a brand's perfumes;
-* GIN trigram indexes on `perfumes.title` and `ingredients.name` (extension `pg_trgm`) — name search.
+* GIN trigram indexes on `perfumes.title` and `ingredients.name` (extension `pg_trgm`) — name
+  search and autocomplete (`ILIKE 'prefix%'` + `%` similarity operator), also reused ad hoc for
+  finding duplicate-brand/ingredient candidates during data cleanup.
 
 ### How the data is loaded
 
 `import_datasets.js` rebuilds everything from scratch on every run (`schema.sql` drops and
-recreates all tables — the data is 100% re-derivable from the source files), in three stages:
+recreates all tables — the data is 100% re-derivable from the source files plus the two scrape
+outputs below).
 
-1. **Première Peau glossary** → canonical, rich `ingredients`;
+<!--
+  TODO(verifica): questa sezione descrive la pipeline "avanzata" con dedup
+  automatico di brand/ingredienti. Confermare che sia la versione
+  attualmente nel repo prima di rimuovere questo commento, e verificare se
+  lo stage 5 (loghi brand) è stato reintegrato in quella versione dello
+  script - nell'ultima copia che ho visto mancava.
+-->
+
+1. **Première Peau glossary** → canonical, rich `ingredients` (glossary anchors, never merged
+   away by later stages);
 2. **Parfumo** → `perfumes`, notes (authoritative source), and accords;
-3. **Fragrantica** → merges into existing perfumes, fills `description`, adds accords, and adds
-    notes only as a fallback for perfumes that still have none.
+3. **Fragrantica** → merges into existing perfumes, fills `description`, adds accords, adds
+   notes only as a fallback for perfumes that still have none, and fills `perfumes.image_url`
+   from the numeric id in the source URL;
+   1. **Brand dedup** → merges brand rows that are almost certainly the same fragrance house,
+      detected by shared perfume titles across sources (name similarity / substring / shared
+      catalog overlap above a threshold) — logged per merge for audit;
+   2. **Ingredient reconciliation** → folds note-only ingredient variants (e.g. a geographic or
+      extraction qualifier like *Sicilian Bergamot*) onto the most specific matching glossary
+      entry when one exists, or onto a newly created canonical base otherwise; glossary entries
+      themselves are never merged away;
+4. **`ingredient_images.json`** (from `scrape_fragrantica_notes.js`) → fills
+   `ingredients.image_url`, matched through `ingredient_aliases` so any known spelling picks up
+   the photo; unmatched entries are written to `unmatched_ingredient_images.csv` for review;
+   1. **Photo propagation** → shares one photo across ingredients that are visually the same
+      raw material (origin/extraction variants of one another) even when kept as distinct rows;
+5. **`brand_logos.json`** (from `scrape_fragrantica_designers.js`) → fills `brands.logo_url`,
+   matched via the same brand-name resolution used during import; unmatched entries are written
+   to `unmatched_brand_logos.csv` for review.
+
+Each stage runs in its own transaction and only affects its own rows on error, so one malformed
+source row is logged and skipped rather than rolling back the whole import.
