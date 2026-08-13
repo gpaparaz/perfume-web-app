@@ -13,7 +13,7 @@ import { useBrands } from "../hooks/useBrands";
 
 const cache = new CellMeasurerCache({
   fixedWidth: true,
-  defaultHeight: 90, // stima iniziale per la riga collassata, prima della misura reale
+  defaultHeight: 90,
 });
 
 export default function BrandPresenter() {
@@ -27,17 +27,49 @@ export default function BrandPresenter() {
     []
   );
 
+  // Stato esplicito dell'accordion aperto: sostituisce data-bs-toggle,
+  // che agirebbe sul DOM senza che React (e quindi CellMeasurer) se ne
+  // accorga.
   const [expandedBrandId, setExpandedBrandId] = useState<number | null>(null);
 
+  // Tiene traccia dell'indice della riga attualmente espansa (non solo
+  // l'id del brand) per poterne invalidare la cache quando si richiude
+  // "di riflesso" - un ref e non uno state perché non deve causare
+  // render, serve solo dentro toggleBrand.
+  const expandedIndexRef = useRef<number | null>(null);
+
   const toggleBrand = useCallback((index: number, brandId: number) => {
-    setExpandedBrandId((prev) => (prev === brandId ? null : brandId));
+    const wasThisOpen = expandedIndexRef.current === index;
+    const previousIndex = expandedIndexRef.current;
+
+    setExpandedBrandId(wasThisOpen ? null : brandId);
+
+    // La riga cliccata cambia stato (si apre o si chiude): invalida.
     cache.clear(index, 0);
     listRef.current?.recomputeRowHeights(index);
+
+    // La riga che era aperta prima (se diversa) si richiude di riflesso,
+    // dato che è un accordion uno-alla-volta: senza invalidarla anche
+    // lei, la List continua a riservarle l'altezza espansa che aveva.
+    if (previousIndex !== null && previousIndex !== index) {
+      cache.clear(previousIndex, 0);
+      listRef.current?.recomputeRowHeights(previousIndex);
+    }
+
+    expandedIndexRef.current = wasThisOpen ? null : index;
   }, []);
 
+  // Ogni volta che il dataset filtrato cambia (es. cambio lettera), la
+  // cache va dimenticata: è indicizzata per posizione (rowIndex), non per
+  // contenuto, quindi senza questo l'altezza misurata per il brand che
+  // PRIMA occupava l'indice N resterebbe applicata al brand diverso che
+  // ora occupa quello stesso indice. Resettiamo anche l'accordion aperto,
+  // perché non ha senso restasse "espanso" per un brand potenzialmente
+  // non più visibile con questo filtro.
   useEffect(() => {
     cache.clearAll();
     setExpandedBrandId(null);
+    expandedIndexRef.current = null;
     listRef.current?.recomputeRowHeights();
   }, [allBrands]);
 
