@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import AccordPyramid from "../CustomComponents/AccordPyramid";
 import api from "../services/axios";
 import type { FragranceDetail, NoteDetail } from "../types";
 
@@ -130,6 +131,9 @@ export default function FragranceInspect() {
               )}
             </p>
             {fragrance.accords.length > 0 && (
+              <AccordPyramid accords={fragrance.accords} />
+            )}
+            {/* {fragrance.accords.length > 0 && (
               <div className="mb-3">
                 {fragrance.accords.map((a) => (
                   <span
@@ -140,7 +144,7 @@ export default function FragranceInspect() {
                   </span>
                 ))}
               </div>
-            )}
+            )} */}
             {fragrance.perfumer && (
               <p className="mb-2">
                 <strong>Naso:</strong> {fragrance.perfumer}
