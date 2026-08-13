@@ -94,7 +94,7 @@ erDiagram
 ### Tables
 
 #### 1. `brands`
-Fragrance houses, deduplicated across sources.
+Perfume houses, deduplicated across sources.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -147,7 +147,7 @@ Dimension table for the main olfactory accords, so accords are an **id-based** s
 | `name_normalized` | `VARCHAR(100)` | **UNIQUE** — dedup key |
 
 #### 5. `perfumes`
-One row per real fragrance, deduplicated across sources by `(brand_id, title_normalized)`.
+One row per real perfume, deduplicated across sources by `(brand_id, title_normalized)`.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -157,7 +157,7 @@ One row per real fragrance, deduplicated across sources by `(brand_id, title_nor
 | `title_normalized` | `VARCHAR(255)` | Dedup key |
 | `description` | `TEXT` | Free-text description (from Fragrantica) |
 | `release_year` | `INTEGER` | Launch year (from Parfumo) |
-| `perfumer` | `VARCHAR(255)` | Nose behind the fragrance (from Parfumo) |
+| `perfumer` | `VARCHAR(255)` | Nose behind the perfume (from Parfumo) |
 | `image_url` | `TEXT` | Perfume photo, derived directly from the Fragrantica perfume-page URL (numeric id) — no scraping needed |
 | `created_at` | `TIMESTAMPTZ` | Defaults to `now()` |
 | | | **UNIQUE** `(brand_id, title_normalized)` |
@@ -215,7 +215,7 @@ outputs below).
 3. **Fragrantica** → merges into existing perfumes, fills `description`, adds accords, adds
    notes only as a fallback for perfumes that still have none, and fills `perfumes.image_url`
    from the numeric id in the source URL;
-   1. **Brand dedup** → merges brand rows that are almost certainly the same fragrance house,
+   1. **Brand dedup** → merges brand rows that are almost certainly the same perfume house,
       detected by shared perfume titles across sources (name similarity / substring / shared
       catalog overlap above a threshold) — logged per merge for audit;
    2. **Ingredient reconciliation** → folds note-only ingredient variants (e.g. a geographic or

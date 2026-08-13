@@ -33,8 +33,8 @@ export default function Header() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/fragrances" className="navbar-brand">
-                  Fragrances
+                <Link to="/perfumes" className="navbar-brand">
+                  Perfumes
                 </Link>
               </li>
             </ul>

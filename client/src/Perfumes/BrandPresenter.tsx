@@ -125,13 +125,11 @@ export default function BrandPresenter() {
                 {isExpanded && (
                   <div className="accordion-collapse collapse show">
                     <div className="accordion-body d-flex flex-wrap gap-3">
-                      {brand.perfumes.map((fragrance) => (
+                      {brand.perfumes.map((perfume) => (
                         <div
-                          key={fragrance.id}
+                          key={perfume.id}
                           style={{ cursor: "pointer", width: "220px" }}
-                          onClick={() =>
-                            navigate(`/fragrances/${fragrance.id}`)
-                          }
+                          onClick={() => navigate(`/perfumes/${perfume.id}`)}
                         >
                           <div className="card h-100 shadow-sm d-flex flex-row">
                             <img
@@ -140,13 +138,13 @@ export default function BrandPresenter() {
                                 height: "50px",
                                 objectFit: "cover",
                               }}
-                              src={fragrance.imageUrl}
+                              src={perfume.imageUrl}
                               alt=""
                             />
                             <div>
-                              <h5 className="mb-0">{fragrance.title}</h5>
+                              <h5 className="mb-0">{perfume.title}</h5>
                               <div className="card-body py-1">
-                                <span>{fragrance.releaseYear}</span>
+                                <span>{perfume.releaseYear}</span>
                               </div>
                             </div>
                           </div>

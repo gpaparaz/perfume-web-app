@@ -6,7 +6,7 @@ import type { IngredientSearchResult, PerfumeSearchResult } from "../types";
 export type SearchMode = "perfume" | "ingredient";
 
 const ENDPOINT: Record<SearchMode, string> = {
-  perfume: "/search/fragrances",
+  perfume: "/search/perfumes",
   ingredient: "/search/ingredients",
 };
 

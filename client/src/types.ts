@@ -54,7 +54,7 @@ export interface AccordDetail {
   rank: number;
 }
 
-export interface FragranceDetail {
+export interface PerfumeDetail {
   id: number;
   title: string;
   description: string | null;
