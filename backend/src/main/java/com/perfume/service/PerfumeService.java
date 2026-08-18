@@ -58,4 +58,20 @@ public class PerfumeService {
                 perfumeAccordRepository.findByPerfume_IdOrderByRankAsc(id));
     }
 
+
+    @Transactional
+    public PerfumeDetailDTO updatePerfume(Long id, PerfumeUpdateDTO dto) {
+        Perfume p = perfumeRepository.findById(id).orElse(null);
+        if (p == null) return null;
+        p.setDescription(dto.getDescription());
+        p.setReleaseYear(dto.getReleaseYear());
+        p.setPerfumer(dto.getPerfumer());
+        p.setImageUrl(dto.getImageUrl());
+        perfumeRepository.save(p);
+        return PerfumeDetailDTO.from(
+                p,
+                perfumeNoteRepository.findByPerfume_Id(id),
+                perfumeAccordRepository.findByPerfume_IdOrderByRankAsc(id));
+    }
+
 }

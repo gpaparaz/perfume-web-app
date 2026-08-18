@@ -31,4 +31,10 @@ public class PerfumeController {
         return ResponseEntity.ok(perfumeService.getAllBrandsWithPerfumes(letter));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PerfumeDetailDTO> updatePerfume(@PathVariable Long id, @RequestBody PerfumeUpdateDTO dto) {
+        PerfumeDetailDTO d = perfumeService.updatePerfume(id, dto);
+        return d == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(d);
+    }
+
 }
