@@ -11,6 +11,11 @@ export default function PerfumeInspect() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState({ description: "", releaseYear: "", perfumer: "", imageUrl: "" });
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchDetail = async () => {
       if (!id) return;
@@ -28,6 +33,46 @@ export default function PerfumeInspect() {
     };
     fetchDetail();
   }, [id]);
+
+
+  const startEdit = () => {
+    if (!perfume) return;
+    setDraft({
+      description: perfume.description ?? "",
+      releaseYear: perfume.releaseYear != null ? String(perfume.releaseYear) : "",
+      perfumer: perfume.perfumer ?? "",
+      imageUrl: perfume.imageUrl ?? "",
+    });
+    setSaveError(null);
+    setEditing(true);
+  };
+  
+  const cancelEdit = () => {
+    setEditing(false);
+    setSaveError(null);
+  };
+
+  const save = async () => {
+    if (!id) return;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const body = {
+        description: draft.description || null,
+        releaseYear: draft.releaseYear.trim() === "" ? null : Number(draft.releaseYear),
+        perfumer: draft.perfumer || null,
+        imageUrl: draft.imageUrl || null,
+      };
+      const res = await api.put<PerfumeDetail>(`/perfumes/${id}`, body);
+      setPerfume(res.data);
+      setEditing(false);
+    } catch (e) {
+      console.error("Errore nel salvataggio:", e);
+      setSaveError("Salvataggio non riuscito. Riprova.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -55,6 +100,65 @@ export default function PerfumeInspect() {
     );
   }
 
+
+  // ---------- EDIT MODE ----------
+    if (editing) {
+      return (
+        <div className="container my-5">
+          <div className="card shadow-sm p-4">
+            <h1 className="display-6 mb-1">{perfume.title}</h1>
+            <p className="text-muted">Modifica scheda (titolo e brand non modificabili)</p>
+            {saveError && <div className="alert alert-danger">{saveError}</div>}
+
+            <div className="mb-3">
+              <label className="form-label small text-muted">Anno di uscita</label>
+              <input
+                type="number"
+                className="form-control"
+                value={draft.releaseYear}
+                onChange={(e) => setDraft((d) => ({ ...d, releaseYear: e.target.value }))}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label small text-muted">Naso (perfumer)</label>
+              <input
+                className="form-control"
+                value={draft.perfumer}
+                onChange={(e) => setDraft((d) => ({ ...d, perfumer: e.target.value }))}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label small text-muted">URL foto</label>
+              <input
+                className="form-control"
+                value={draft.imageUrl}
+                onChange={(e) => setDraft((d) => ({ ...d, imageUrl: e.target.value }))}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label small text-muted">Descrizione</label>
+              <textarea
+                className="form-control"
+                rows={5}
+                value={draft.description}
+                onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
+              />
+            </div>
+
+            <div className="d-flex gap-2 mt-2">
+              <button className="btn btn-primary" onClick={save} disabled={saving}>
+                {saving ? "Salvataggio..." : "Salva"}
+              </button>
+              <button className="btn btn-outline-secondary" onClick={cancelEdit} disabled={saving}>
+                Annulla
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------- VIEW MODE ----------
   const renderLayer = (title: string, notes: NoteDetail[]) =>
     notes.length === 0 ? null : (
       <div className="mb-4">
@@ -94,12 +198,14 @@ export default function PerfumeInspect() {
 
   return (
     <div className="container my-5">
-      <button
-        className="btn btn-outline-secondary mb-4"
-        onClick={() => navigate(-1)}
-      >
-        ← Indietro
-      </button>
+        <div className="d-flex justify-content-between mb-4">
+          <button className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
+            ← Indietro
+          </button>
+          <button className="btn btn-primary" onClick={startEdit}>
+            Modifica
+          </button>
+        </div>
 
       <div className="card shadow-sm p-4">
         <div className="row g-4">
