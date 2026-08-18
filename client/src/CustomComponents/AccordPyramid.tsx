@@ -1,13 +1,7 @@
 import { useMemo } from "react";
 
-export type Accord = {
-  id: number;
-  name: string;
-  rank: number;
-};
-
 interface AccordPyramidProps {
-  accords: Accord[];
+  accords: AccordDetail[];
   title?: string;
   maxItems?: number;
 }
