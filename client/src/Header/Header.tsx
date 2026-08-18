@@ -28,8 +28,8 @@ export default function Header() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/glossary" className="navbar-brand">
-                  Glossary
+                <Link to="/ingredient" className="navbar-brand">
+                  Ingredients
                 </Link>
               </li>
               <li className="nav-item">

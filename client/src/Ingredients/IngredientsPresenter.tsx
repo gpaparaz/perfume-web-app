@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import AlphabetFilter from "../CustomComponents/AlphabetFilter";
 import { useIngredients } from "../hooks/useIngredients";
 
-export default function GlossaryPresenter() {
+export default function IngredientPresenter() {
   const { ingredients, selectedLetter, loading, error, toggleLetter } =
     useIngredients();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function GlossaryPresenter() {
                 className="col"
                 key={ingredient.id}
                 style={{ cursor: "pointer" }}
-                onClick={() => navigate(`/glossary/${ingredient.id}`)}
+                onClick={() => navigate(`/ingredient/${ingredient.id}`)}
               >
                 <div className="card h-100 shadow-sm">
                   <div className="card-body">

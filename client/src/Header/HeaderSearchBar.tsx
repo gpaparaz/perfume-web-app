@@ -13,7 +13,7 @@ type SearchResult = PerfumeSearchResult | IngredientSearchResult;
 // Adjust these two if your routes are named differently.
 const DETAIL_PATH: Record<SearchMode, (id: number) => string> = {
   perfume: (id) => `/perfumes/${id}`,
-  ingredient: (id) => `/glossary/${id}`,
+  ingredient: (id) => `/ingredient/${id}`,
 };
 
 const MIN_CHARS = 2;

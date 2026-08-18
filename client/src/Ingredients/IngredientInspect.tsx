@@ -20,7 +20,7 @@ export default function IngredientInspect() {
       if (!id) return;
       try {
         setLoading(true);
-        const response = await api.get<Ingredient>(`/glossary/${id}`);
+        const response = await api.get<Ingredient>(`/ingredient/${id}`);
         console.log(response.data);
         setIngredient(response.data);
       } catch (err) {
@@ -59,7 +59,7 @@ export default function IngredientInspect() {
       setSaving(true);
       setSaveError(null);
       try {
-        const res = await api.put<Ingredient>(`/glossary/${id}`, draft);
+        const res = await api.put<Ingredient>(`/ingredient/${id}`, draft);
         setIngredient(res.data);
         setEditing(false);
         setDraft(null);
@@ -89,7 +89,7 @@ export default function IngredientInspect() {
         </div>
         <button
           className="btn btn-primary"
-          onClick={() => navigate("/glossary")}
+          onClick={() => navigate("/ingredient")}
         >
           Torna al Glossario
         </button>

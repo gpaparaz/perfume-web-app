@@ -13,7 +13,7 @@ export const useIngredients = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const response = await api.get<IngredientSummary[]>("/glossary");
+        const response = await api.get<IngredientSummary[]>("/ingredient");
         setAllIngredients(response.data);
       } catch (err) {
         console.error("Errore nel recupero del glossario:", err);

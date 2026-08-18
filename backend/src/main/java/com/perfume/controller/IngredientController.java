@@ -16,14 +16,14 @@ import com.perfume.model.Ingredient;
 import com.perfume.service.IngredientService;
 
 @RestController
-@RequestMapping("/api/glossary")
-public class GlossaryController {
+@RequestMapping("/api/ingredient")
+public class IngredientController {
     @Autowired
     private IngredientService ingredientService;
 
     // 1. Endpoint globale: restituisce solo i dati minimi
     @GetMapping
-    public ResponseEntity<List<IngredientSummaryDTO>> getGlossarySummary() {
+    public ResponseEntity<List<IngredientSummaryDTO>> getIngredientSummary() {
         return ResponseEntity.ok(ingredientService.getAllIngredientSummaries());
     }
 

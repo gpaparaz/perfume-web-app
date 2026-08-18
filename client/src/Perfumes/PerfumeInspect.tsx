@@ -169,7 +169,7 @@ export default function PerfumeInspect() {
               key={n.ingredientId}
               className="d-flex align-items-center border rounded-pill ps-1 pe-3 py-1 m-1"
               style={{ cursor: "pointer" }}
-              onClick={() => navigate(`/glossary/${n.ingredientId}`)}
+              onClick={() => navigate(`/ingredient/${n.ingredientId}`)}
             >
               {n.imageUrl ? (
                 <img
