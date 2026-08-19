@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AccordPyramid from "../CustomComponents/AccordPyramid";
 import api from "../services/axios";
 import type { NoteDetail, PerfumeDetail } from "../types";
+import { downloadText, toCsv } from "../utils/download";
 
 export default function PerfumeInspect() {
   const { id } = useParams<{ id: string }>();
