@@ -259,18 +259,22 @@ export default function PerfumeInspect() {
   return (
     <div className="container my-5">
       <div className="d-flex justify-content-between mb-4">
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => navigate(-1)}
-        >
-          ← Indietro
-        </button>
-        <button className="btn btn-primary" onClick={startEdit}>
-          Modifica
-        </button>
-        <button className="btn btn-outline-success" onClick={exportCsv}>
-          ⬇ Esporta CSV
-        </button>
+        <div>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => navigate(-1)}
+          >
+            ← Indietro
+          </button>
+        </div>
+        <div>
+          <button className="btn btn-primary" onClick={startEdit}>
+            Modifica
+          </button>
+          <button className="btn btn-outline-success" onClick={exportCsv}>
+            ⬇ Esporta CSV
+          </button>
+        </div>
       </div>
 
       <div className="card shadow-sm p-4">
