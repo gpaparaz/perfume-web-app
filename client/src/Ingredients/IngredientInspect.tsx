@@ -71,6 +71,18 @@ export default function IngredientInspect() {
       }
     };
 
+
+   const exportCsv = () => {
+    if (!ingredient) return;
+    const headers = ["id","name","category","subcategory","botanical_name","typical_volatility","odor_strength","short_description","appearance","producing_countries","evolution_immediate","evolution_after_hours","evolution_after_days","full_extracted_text","source_url","image_url","from_glossary"];
+    const i = ingredient;
+    const row = [i.id, i.name, i.category, i.subcategory, i.botanicalName, i.typicalVolatility,
+      i.odorStrength, i.shortDescription, i.appearance, i.producingCountries, i.evolutionImmediate,
+      i.evolutionAfterHours, i.evolutionAfterDays, i.fullExtractedText, i.sourceUrl, i.imageUrl,
+      i.fromGlossary];
+    downloadText(`${i.name || "ingrediente"}.csv`, toCsv(headers, [row]));
+  };
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center my-5">
@@ -165,6 +177,7 @@ export default function IngredientInspect() {
           <button className="btn btn-primary" onClick={startEdit}>
             Modifica
           </button>
+          <button className="btn btn-outline-success" onClick={exportCsv}>⬇ Esporta CSV</button>
         </div>
 
         <div className="card shadow-sm p-4">

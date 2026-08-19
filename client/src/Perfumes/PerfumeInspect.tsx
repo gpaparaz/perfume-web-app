@@ -74,6 +74,20 @@ export default function PerfumeInspect() {
     }
   };
 
+
+  const exportCsv = () => {
+    if (!perfume) return;
+    const notes = (ns: typeof perfume.top) => ns.map((n) => n.name).join("; ");
+    const headers = ["id","brand","title","release_year","perfumer","description","image_url","top_notes","heart_notes","base_notes","accords"];
+    const row = [
+      perfume.id, perfume.brandName, perfume.title, perfume.releaseYear, perfume.perfumer,
+      perfume.description, perfume.imageUrl,
+      notes(perfume.top), notes(perfume.heart), notes(perfume.base),
+      perfume.accords.map((a) => a.name).join("; "),
+    ];
+    downloadText(`${perfume.title || "profumo"}.csv`, toCsv(headers, [row]));
+  };
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center my-5">
@@ -205,6 +219,7 @@ export default function PerfumeInspect() {
           <button className="btn btn-primary" onClick={startEdit}>
             Modifica
           </button>
+          <button className="btn btn-outline-success" onClick={exportCsv}>⬇ Esporta CSV</button>
         </div>
 
       <div className="card shadow-sm p-4">
