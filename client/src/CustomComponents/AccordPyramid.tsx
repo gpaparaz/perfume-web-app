@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { AccordDetail } from "../types";
 
 interface AccordPyramidProps {
   accords: AccordDetail[];

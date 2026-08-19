@@ -12,7 +12,12 @@ export default function PerfumeInspect() {
   const [error, setError] = useState<string | null>(null);
 
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState({ description: "", releaseYear: "", perfumer: "", imageUrl: "" });
+  const [draft, setDraft] = useState({
+    description: "",
+    releaseYear: "",
+    perfumer: "",
+    imageUrl: "",
+  });
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -34,19 +39,19 @@ export default function PerfumeInspect() {
     fetchDetail();
   }, [id]);
 
-
   const startEdit = () => {
     if (!perfume) return;
     setDraft({
       description: perfume.description ?? "",
-      releaseYear: perfume.releaseYear != null ? String(perfume.releaseYear) : "",
+      releaseYear:
+        perfume.releaseYear != null ? String(perfume.releaseYear) : "",
       perfumer: perfume.perfumer ?? "",
       imageUrl: perfume.imageUrl ?? "",
     });
     setSaveError(null);
     setEditing(true);
   };
-  
+
   const cancelEdit = () => {
     setEditing(false);
     setSaveError(null);
@@ -59,7 +64,8 @@ export default function PerfumeInspect() {
     try {
       const body = {
         description: draft.description || null,
-        releaseYear: draft.releaseYear.trim() === "" ? null : Number(draft.releaseYear),
+        releaseYear:
+          draft.releaseYear.trim() === "" ? null : Number(draft.releaseYear),
         perfumer: draft.perfumer || null,
         imageUrl: draft.imageUrl || null,
       };
@@ -74,15 +80,33 @@ export default function PerfumeInspect() {
     }
   };
 
-
   const exportCsv = () => {
     if (!perfume) return;
     const notes = (ns: typeof perfume.top) => ns.map((n) => n.name).join("; ");
-    const headers = ["id","brand","title","release_year","perfumer","description","image_url","top_notes","heart_notes","base_notes","accords"];
+    const headers = [
+      "id",
+      "brand",
+      "title",
+      "release_year",
+      "perfumer",
+      "description",
+      "image_url",
+      "top_notes",
+      "heart_notes",
+      "base_notes",
+      "accords",
+    ];
     const row = [
-      perfume.id, perfume.brandName, perfume.title, perfume.releaseYear, perfume.perfumer,
-      perfume.description, perfume.imageUrl,
-      notes(perfume.top), notes(perfume.heart), notes(perfume.base),
+      perfume.id,
+      perfume.brandName,
+      perfume.title,
+      perfume.releaseYear,
+      perfume.perfumer,
+      perfume.description,
+      perfume.imageUrl,
+      notes(perfume.top),
+      notes(perfume.heart),
+      notes(perfume.base),
       perfume.accords.map((a) => a.name).join("; "),
     ];
     downloadText(`${perfume.title || "profumo"}.csv`, toCsv(headers, [row]));
@@ -114,65 +138,86 @@ export default function PerfumeInspect() {
     );
   }
 
-
   // ---------- EDIT MODE ----------
-    if (editing) {
-      return (
-        <div className="container my-5">
-          <div className="card shadow-sm p-4">
-            <h1 className="display-6 mb-1">{perfume.title}</h1>
-            <p className="text-muted">Modifica scheda (titolo e brand non modificabili)</p>
-            {saveError && <div className="alert alert-danger">{saveError}</div>}
+  if (editing) {
+    return (
+      <div className="container my-5">
+        <div className="card shadow-sm p-4">
+          <h1 className="display-6 mb-1">{perfume.title}</h1>
+          <p className="text-muted">
+            Modifica scheda (titolo e brand non modificabili)
+          </p>
+          {saveError && <div className="alert alert-danger">{saveError}</div>}
 
-            <div className="mb-3">
-              <label className="form-label small text-muted">Anno di uscita</label>
-              <input
-                type="number"
-                className="form-control"
-                value={draft.releaseYear}
-                onChange={(e) => setDraft((d) => ({ ...d, releaseYear: e.target.value }))}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label small text-muted">Naso (perfumer)</label>
-              <input
-                className="form-control"
-                value={draft.perfumer}
-                onChange={(e) => setDraft((d) => ({ ...d, perfumer: e.target.value }))}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label small text-muted">URL foto</label>
-              <input
-                className="form-control"
-                value={draft.imageUrl}
-                onChange={(e) => setDraft((d) => ({ ...d, imageUrl: e.target.value }))}
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label small text-muted">Descrizione</label>
-              <textarea
-                className="form-control"
-                rows={5}
-                value={draft.description}
-                onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
-              />
-            </div>
+          <div className="mb-3">
+            <label className="form-label small text-muted">
+              Anno di uscita
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              value={draft.releaseYear}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, releaseYear: e.target.value }))
+              }
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label small text-muted">
+              Naso (perfumer)
+            </label>
+            <input
+              className="form-control"
+              value={draft.perfumer}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, perfumer: e.target.value }))
+              }
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label small text-muted">URL foto</label>
+            <input
+              className="form-control"
+              value={draft.imageUrl}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, imageUrl: e.target.value }))
+              }
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label small text-muted">Descrizione</label>
+            <textarea
+              className="form-control"
+              rows={5}
+              value={draft.description}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, description: e.target.value }))
+              }
+            />
+          </div>
 
-            <div className="d-flex gap-2 mt-2">
-              <button className="btn btn-primary" onClick={save} disabled={saving}>
-                {saving ? "Salvataggio..." : "Salva"}
-              </button>
-              <button className="btn btn-outline-secondary" onClick={cancelEdit} disabled={saving}>
-                Annulla
-              </button>
-            </div>
+          <div className="d-flex gap-2 mt-2">
+            <button
+              className="btn btn-primary"
+              onClick={save}
+              disabled={saving}
+            >
+              {saving ? "Salvataggio..." : "Salva"}
+            </button>
+            <button
+              className="btn btn-outline-secondary"
+              onClick={cancelEdit}
+              disabled={saving}
+            >
+              Annulla
+            </button>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
-    // ---------- VIEW MODE ----------
+  // ---------- VIEW MODE ----------
   const renderLayer = (title: string, notes: NoteDetail[]) =>
     notes.length === 0 ? null : (
       <div className="mb-4">
@@ -212,15 +257,20 @@ export default function PerfumeInspect() {
 
   return (
     <div className="container my-5">
-        <div className="d-flex justify-content-between mb-4">
-          <button className="btn btn-outline-secondary" onClick={() => navigate(-1)}>
-            ← Indietro
-          </button>
-          <button className="btn btn-primary" onClick={startEdit}>
-            Modifica
-          </button>
-          <button className="btn btn-outline-success" onClick={exportCsv}>⬇ Esporta CSV</button>
-        </div>
+      <div className="d-flex justify-content-between mb-4">
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => navigate(-1)}
+        >
+          ← Indietro
+        </button>
+        <button className="btn btn-primary" onClick={startEdit}>
+          Modifica
+        </button>
+        <button className="btn btn-outline-success" onClick={exportCsv}>
+          ⬇ Esporta CSV
+        </button>
+      </div>
 
       <div className="card shadow-sm p-4">
         <div className="row g-4">

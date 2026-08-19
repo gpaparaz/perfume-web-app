@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.perfume.dto.BrandWithPerfumesDTO;
 import com.perfume.dto.PerfumeDetailDTO;
+import com.perfume.dto.PerfumeUpdateDTO;
 import com.perfume.model.Brand;
 import com.perfume.model.Perfume;
 import com.perfume.repository.BrandRepository;
@@ -58,11 +59,11 @@ public class PerfumeService {
                 perfumeAccordRepository.findByPerfume_IdOrderByRankAsc(id));
     }
 
-
     @Transactional
     public PerfumeDetailDTO updatePerfume(Long id, PerfumeUpdateDTO dto) {
         Perfume p = perfumeRepository.findById(id).orElse(null);
-        if (p == null) return null;
+        if (p == null)
+            return null;
         p.setDescription(dto.getDescription());
         p.setReleaseYear(dto.getReleaseYear());
         p.setPerfumer(dto.getPerfumer());

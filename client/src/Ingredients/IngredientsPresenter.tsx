@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import AlphabetFilter from "../CustomComponents/AlphabetFilter";
 import { useIngredients } from "../hooks/useIngredients";
 
-export default function IngredientPresenter() {
+export default function IngredientsPresenter() {
   const { ingredients, selectedLetter, loading, error, toggleLetter } =
     useIngredients();
   const navigate = useNavigate();
