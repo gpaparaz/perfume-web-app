@@ -24,5 +24,4 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
             "ORDER BY b.name ASC")
     List<Brand> findBrandsByInitialWithPerfumes(@Param("letter") String initial);
     List<BrandOption> findAllByOrderByNameAsc();
-    List<BrandOption> findAllOptions();
 }

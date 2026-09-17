@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.perfume.dto.BrandOptionDTO;
 import com.perfume.repository.BrandRepository;
+import com.perfume.repository.BrandRepository.BrandOption;
 
 @RestController
 @RequestMapping("/api/brands")
@@ -20,7 +20,7 @@ public class BrandController {
     }
 
     @GetMapping
-    public List<BrandOptionDTO> all() {
-        return repo.findAllOptions();
+    public List<BrandOption> all() {
+        return repo.findAllByOrderByNameAsc(); 
     }
 }
