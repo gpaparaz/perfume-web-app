@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdvancedSearch from "./AdvancedSearch/AdvancedSearch.tsx";
 import App from "./App.tsx";
 import HomeDashboard from "./Home/HomeDashboard.tsx";
 import IngredientInspect from "./Ingredients/IngredientInspect.tsx";
@@ -22,6 +23,7 @@ if (root) {
           <Route path="/ingredient/:id" element={<IngredientInspect />} />
           <Route path="perfumes" element={<BrandPresenter />} />
           <Route path="/perfumes/:id" element={<PerfumeInspect />} />
+          <Route path="/advanced-search" element={<AdvancedSearch />} />
         </Route>
       </Routes>
     </BrowserRouter>

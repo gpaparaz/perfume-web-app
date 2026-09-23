@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import HeaderSearchBar from "./HeaderSearchBar";
 
 export default function Header() {
   return (
@@ -37,11 +36,13 @@ export default function Header() {
                   Perfumes
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/advanced-search" className="navbar-brand">
+                  Advanced Search
+                </Link>
+              </li>
             </ul>
           </div>
-        </div>
-        <div style={{ width: "300px", marginRight: "20px" }}>
-          <HeaderSearchBar />
         </div>
       </nav>
     </div>
