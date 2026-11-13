@@ -7,6 +7,7 @@ import type {
   IngredientSummary,
   PerfumeSearchResult,
 } from "../types";
+import { noteImage } from "../utils/noteImage";
 
 type SearchResult = PerfumeSearchResult | IngredientSearchResult;
 
@@ -158,7 +159,7 @@ export default function HeaderSearchBar({
               >
                 {item.imageUrl && (
                   <img
-                    src={item.imageUrl}
+                    src={noteImage(item.imageUrl, "thumb")}
                     alt=""
                     className="rounded flex-shrink-0"
                     style={{

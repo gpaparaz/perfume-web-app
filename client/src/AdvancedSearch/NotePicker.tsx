@@ -2,6 +2,7 @@ import type { KeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useHeaderSearch } from "../hooks/useHeaderSearch";
 import type { IngredientSearchResult } from "../types";
+import { noteImage } from "../utils/noteImage";
 
 const MIN_CHARS = 2;
 
@@ -132,7 +133,7 @@ export default function NotePicker({ selected, onAdd, onRemove }: NotePickerProp
               >
                 {item.imageUrl && (
                   <img
-                    src={item.imageUrl}
+                    src={noteImage(item.imageUrl, "thumb")}
                     alt=""
                     className="rounded flex-shrink-0"
                     style={{ width: "1.75rem", height: "1.75rem", objectFit: "cover" }}

@@ -4,6 +4,7 @@ import AccordPyramid from "../CustomComponents/AccordPyramid";
 import api from "../services/axios";
 import type { NoteDetail, PerfumeDetail } from "../types";
 import { downloadText, toCsv } from "../utils/download";
+import { noteImage } from "../utils/noteImage";
 
 export default function PerfumeInspect() {
   const { id } = useParams<{ id: string }>();
@@ -233,7 +234,7 @@ export default function PerfumeInspect() {
             >
               {n.imageUrl ? (
                 <img
-                  src={n.imageUrl}
+                  src={noteImage(n.imageUrl, "thumb")}
                   alt={n.name}
                   className="rounded-circle me-2"
                   style={{ width: 34, height: 34, objectFit: "cover" }}

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/axios";
 import type { Ingredient } from "../types";
 import { downloadText, toCsv } from "../utils/download";
+import { noteImage } from "../utils/noteImage";
 
 export default function IngredientInspect() {
   const { id } = useParams<{ id: string }>();
@@ -240,12 +241,12 @@ export default function IngredientInspect() {
       <div className="card shadow-sm p-4">
         <div className="d-flex align-items-center mb-3">
           {ingredient.imageUrl && (
-            <img
-              src={ingredient.imageUrl}
-              alt={ingredient.name}
-              className="rounded me-3"
-              style={{ width: 64, height: 64, objectFit: "cover" }}
-            />
+            <div
+              className="photo-plate me-4 flex-shrink-0"
+              style={{ width: 160, height: 160 }}
+            >
+              <img src={noteImage(ingredient.imageUrl, "full")} alt={ingredient.name} />
+            </div>
           )}
           <h1 className="display-5 mb-0">{ingredient.name}</h1>
           {ingredient.typicalVolatility && (

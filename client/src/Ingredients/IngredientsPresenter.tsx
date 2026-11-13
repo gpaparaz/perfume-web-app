@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AlphabetFilter from "../CustomComponents/AlphabetFilter";
 import { useIngredients } from "../hooks/useIngredients";
+import { noteImage } from "../utils/noteImage";
 
 export default function IngredientsPresenter() {
   const { ingredients, selectedLetter, loading, error, toggleLetter } =
     useIngredients();
-  const navigate = useNavigate();
 
   return (
     <div className="container">
@@ -27,34 +27,32 @@ export default function IngredientsPresenter() {
       {error && <div className="alert alert-danger text-center">{error}</div>}
 
       {!loading && !error && (
-        <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 mt-3">
           {ingredients.length > 0 ? (
             ingredients.map((ingredient) => (
-              <div
-                className="col"
-                key={ingredient.id}
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate(`/ingredient/${ingredient.id}`)}
-              >
-                <div className="card h-100 shadow-sm">
-                  {ingredient.imageUrl && (
-                    <img
-                      src={ingredient.imageUrl}
-                      alt=""
-                      loading="lazy"
-                      className="card-img-top"
-                      style={{ height: "160px", objectFit: "cover" }}
-                    />
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title serif fs-4 text-capitalize">
-                      {ingredient.name}
-                    </h5>
-                    <h6 className="card-subtitle mb-2 text-muted small">
-                      Category: {ingredient.category || ""}
-                    </h6>
+              <div className="col" key={ingredient.id}>
+                <Link
+                  to={`/ingredient/${ingredient.id}`}
+                  className="ingredient-card"
+                >
+                  <div className="photo-plate">
+                    {ingredient.imageUrl && (
+                      <img
+                        src={noteImage(ingredient.imageUrl, "thumb")}
+                        alt=""
+                        loading="lazy"
+                      />
+                    )}
                   </div>
-                </div>
+                  <div className="min-w-0">
+                    <div className="name">{ingredient.name}</div>
+                    <div className="meta">
+                      {[ingredient.category, ingredient.typicalVolatility]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </div>
+                  </div>
+                </Link>
               </div>
             ))
           ) : (
