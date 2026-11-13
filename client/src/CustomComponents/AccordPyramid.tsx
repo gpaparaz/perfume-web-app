@@ -42,23 +42,24 @@ export default function AccordPyramid({
   if (sortedAccords.length === 0) return null;
 
   return (
-    <div>
+    <div className="accord-scale">
       <h4 className="eyebrow mb-3">{title}</h4>
-      <div className="d-flex flex-column gap-2">
+      <ul className="list-unstyled m-0">
         {sortedAccords.map((accord) => (
-          <div
-            key={accord.id}
-            className="text-white text-center py-2 text-capitalize"
-            style={{
-              width: `${widthByRank.get(accord.rank)}%`,
-              backgroundColor: colorForAccord(accord.name),
-              borderRadius: "0 999px 999px 0",
-            }}
-          >
-            {accord.name.toLowerCase()}
-          </div>
+          <li key={accord.id} className="accord-row">
+            <span className="accord-name">{accord.name.toLowerCase()}</span>
+            <span className="accord-track" aria-hidden="true">
+              <span
+                className="accord-fill"
+                style={{
+                  width: `${widthByRank.get(accord.rank)}%`,
+                  backgroundColor: colorForAccord(accord.name),
+                }}
+              />
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
