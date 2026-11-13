@@ -17,7 +17,7 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
       String getName();
     }
 
-    // Recupera i brand per iniziale e carica i profumi associati in un colpo solo
+    // Fetches brands by initial and loads their perfumes in a single query
     @Query("SELECT DISTINCT b FROM Brand b " +
             "LEFT JOIN FETCH b.perfumes " +
             "WHERE LOWER(b.name) LIKE LOWER(CONCAT(:letter, '%')) " +

@@ -7,13 +7,13 @@ interface AccordPyramidProps {
   maxItems?: number;
 }
 
-const MAX_WIDTH = 100; // % - barra del rank più forte
-const MIN_WIDTH = 30; // % - barra del rank più debole mostrato
+const MAX_WIDTH = 100; // % - bar of the strongest rank
+const MIN_WIDTH = 30; // % - bar of the weakest rank shown
 
-// Colore deterministico per nome accordo: non è la palette reale di
-// Fragrantica (non pubblica), ma garantisce che lo stesso accordo abbia
-// sempre lo stesso colore in tutta l'app, senza dover mantenere a mano
-// una mappa per ognuno dei ~98 accordi nel DB.
+// Deterministic color per accord name: not Fragrantica's real palette
+// (which isn't public), but it guarantees the same accord always gets the
+// same color across the app, without hand-maintaining a map for each of
+// the ~98 accords in the DB.
 function colorForAccord(name: string): string {
   let hash = 0;
   const normalized = name.toLowerCase();
@@ -26,7 +26,7 @@ function colorForAccord(name: string): string {
 
 export default function AccordPyramid({
   accords,
-  title = "Accordi Principali",
+  title = "Main Accords",
   maxItems = 10,
 }: AccordPyramidProps) {
   const { sortedAccords, widthByRank } = useMemo(() => {
@@ -34,11 +34,10 @@ export default function AccordPyramid({
       .sort((a, b) => a.rank - b.rank)
       .slice(0, maxItems);
 
-    // Raggruppiamo per rank: accordi a pari merito ottengono la stessa
-    // larghezza. La larghezza è calcolata sulla POSIZIONE del gruppo tra
-    // i rank unici presenti, non sul valore grezzo di rank - così un
-    // salto nella numerazione (es. manca l'8) non produce un salto
-    // innaturale nella larghezza delle barre.
+    // Group by rank: tied accords get the same width. The width is based
+    // on the group's POSITION among the distinct ranks present, not on the
+    // raw rank value - so a gap in the numbering (e.g. 8 is missing)
+    // doesn't produce an unnatural jump in bar width.
     const uniqueRanks = [...new Set(sorted.map((a) => a.rank))];
     const widthMap = new Map<number, number>();
     uniqueRanks.forEach((rank, i) => {

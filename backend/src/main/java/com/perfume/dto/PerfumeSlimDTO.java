@@ -8,7 +8,7 @@ public class PerfumeSlimDTO {
     private Integer releaseYear;
     private String imageUrl;
 
-    // Costruttore, Getter e Setter
+    // Constructor, getters and setters
     public PerfumeSlimDTO(Long id, String title, Integer releaseYear, String imageUrl) {
         this.id = id;
         this.title = title;

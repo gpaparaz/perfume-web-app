@@ -27,15 +27,15 @@ export default function BrandPresenter() {
     []
   );
 
-  // Stato esplicito dell'accordion aperto: sostituisce data-bs-toggle,
-  // che agirebbe sul DOM senza che React (e quindi CellMeasurer) se ne
-  // accorga.
+  // Explicit state for the open accordion: replaces data-bs-toggle, which
+  // would change the DOM without React (and therefore CellMeasurer)
+  // noticing.
   const [expandedBrandId, setExpandedBrandId] = useState<number | null>(null);
 
-  // Tiene traccia dell'indice della riga attualmente espansa (non solo
-  // l'id del brand) per poterne invalidare la cache quando si richiude
-  // "di riflesso" - un ref e non uno state perché non deve causare
-  // render, serve solo dentro toggleBrand.
+  // Tracks the index of the currently expanded row (not just the brand
+  // id) so its cache can be invalidated when it collapses as a side effect
+  // - a ref rather than state because it must not trigger renders, it's
+  // only needed inside toggleBrand.
   const expandedIndexRef = useRef<number | null>(null);
 
   const toggleBrand = useCallback((index: number, brandId: number) => {
@@ -44,13 +44,13 @@ export default function BrandPresenter() {
 
     setExpandedBrandId(wasThisOpen ? null : brandId);
 
-    // La riga cliccata cambia stato (si apre o si chiude): invalida.
+    // The clicked row changes state (opens or closes): invalidate it.
     cache.clear(index, 0);
     listRef.current?.recomputeRowHeights(index);
 
-    // La riga che era aperta prima (se diversa) si richiude di riflesso,
-    // dato che è un accordion uno-alla-volta: senza invalidarla anche
-    // lei, la List continua a riservarle l'altezza espansa che aveva.
+    // The previously open row (if different) collapses as a side effect,
+    // since this is a one-at-a-time accordion: without invalidating it too,
+    // the List keeps reserving its old expanded height.
     if (previousIndex !== null && previousIndex !== index) {
       cache.clear(previousIndex, 0);
       listRef.current?.recomputeRowHeights(previousIndex);
@@ -59,13 +59,13 @@ export default function BrandPresenter() {
     expandedIndexRef.current = wasThisOpen ? null : index;
   }, []);
 
-  // Ogni volta che il dataset filtrato cambia (es. cambio lettera), la
-  // cache va dimenticata: è indicizzata per posizione (rowIndex), non per
-  // contenuto, quindi senza questo l'altezza misurata per il brand che
-  // PRIMA occupava l'indice N resterebbe applicata al brand diverso che
-  // ora occupa quello stesso indice. Resettiamo anche l'accordion aperto,
-  // perché non ha senso restasse "espanso" per un brand potenzialmente
-  // non più visibile con questo filtro.
+  // Whenever the filtered dataset changes (e.g. a different letter), the
+  // cache must be dropped: it's indexed by position (rowIndex), not by
+  // content, so otherwise the height measured for the brand that USED TO
+  // sit at index N would be applied to the different brand now at that
+  // index. The open accordion is reset too, since it makes no sense to keep
+  // it "expanded" for a brand that may no longer be visible with this
+  // filter.
   useEffect(() => {
     cache.clearAll();
     setExpandedBrandId(null);
@@ -166,7 +166,7 @@ export default function BrandPresenter() {
       {loading && (
         <div className="text-center my-5">
           <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Caricamento...</span>
+            <span className="visually-hidden">Loading...</span>
           </div>
         </div>
       )}

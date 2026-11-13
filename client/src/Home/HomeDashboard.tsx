@@ -1,3 +1,3 @@
 export default function HomeDashboard() {
-  return <>Questa è la Home</>;
+  return <>This is the Home page</>;
 }

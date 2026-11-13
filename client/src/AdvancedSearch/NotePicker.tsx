@@ -81,7 +81,7 @@ export default function NotePicker({ selected, onAdd, onRemove }: NotePickerProp
                 type="button"
                 className="btn-close btn-close-white"
                 style={{ fontSize: "0.5rem" }}
-                aria-label={`Rimuovi ${note.name}`}
+                aria-label={`Remove ${note.name}`}
                 onClick={() => onRemove(note.id)}
               />
             </span>
@@ -100,7 +100,7 @@ export default function NotePicker({ selected, onAdd, onRemove }: NotePickerProp
           }}
           onKeyDown={handleKeyDown}
           onFocus={() => setIsOpen(true)}
-          placeholder="Aggiungi una nota (es. bergamotto)..."
+          placeholder="Add a note (e.g. bergamot)..."
           className="form-control"
           aria-autocomplete="list"
           aria-expanded={showDropdown}
@@ -154,7 +154,7 @@ export default function NotePicker({ selected, onAdd, onRemove }: NotePickerProp
 
       {showDropdown && !loading && !error && options.length === 0 && (
         <div className="dropdown-menu show w-100 mt-1 shadow-sm px-3 py-2 small text-muted">
-          Nessuna nota trovata per "{query}"
+          No notes found for "{query}"
         </div>
       )}
     </div>

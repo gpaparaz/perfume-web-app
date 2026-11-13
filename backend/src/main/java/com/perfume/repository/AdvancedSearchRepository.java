@@ -45,9 +45,9 @@ public class AdvancedSearchRepository {
             sb.append(" AND p.release_year <= ?");
             p.add(yearTo);
         }
-        // "Li deve avere tutti": si parte dal lato indicizzato (accord_id /
-        // ingredient_id) per costruire i candidati, invece di valutare una
-        // subquery su ognuno dei ~112k profumi.
+        // "Must have all of them": build the candidates starting from the indexed
+        // side (accord_id / ingredient_id), instead of evaluating a subquery
+        // for each of the ~112k perfumes.
         if (accordIds != null && !accordIds.isEmpty()) {
             sb.append(" AND p.id IN (SELECT pa.perfume_id FROM perfume_accords pa WHERE pa.accord_id IN (")
                     .append(placeholders(accordIds.size()))
@@ -79,9 +79,9 @@ public class AdvancedSearchRepository {
                         + "FROM perfumes p JOIN brands b ON b.id = p.brand_id").append(w.sql());
         List<Object> params = new ArrayList<>(w.params());
 
-        // Priorita' di rilevanza: piu' gli accordi scelti sono dominanti (rank
-        // basso), piu' il profumo e' caratteristico. Senza accordi non c'e'
-        // segnale, quindi alfabetico.
+        // Relevance order: the more dominant the chosen accords are (low rank),
+        // the more characteristic the perfume. Without accords there is no
+        // signal, so sort alphabetically.
         if (accordIds != null && !accordIds.isEmpty()) {
             sb.append(" ORDER BY (SELECT COALESCE(sum(pa.rank), 0) FROM perfume_accords pa")
                     .append(" WHERE pa.perfume_id = p.id AND pa.accord_id IN (")

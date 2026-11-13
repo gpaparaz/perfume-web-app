@@ -24,12 +24,12 @@ public class IngredientService {
         return ingredientRepository.findAllByOrderByNameAsc();
     }
 
-    // 1. Recupera la lista leggera per il glossario globale
+    // 1. Fetches the lightweight list for the global glossary
     public List<IngredientSummaryDTO> getAllIngredientSummaries() {
         return ingredientRepository.findAllSummaries();
     }
 
-    // 2. Recupera l'ingrediente completo per l'Inspect tramite ID
+    // 2. Fetches the full ingredient for the Inspect page by ID
     public Optional<Ingredient> getIngredientById(Long id) {
         return ingredientRepository.findById(id);
     }

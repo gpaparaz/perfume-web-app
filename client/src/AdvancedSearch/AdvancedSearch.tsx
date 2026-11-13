@@ -57,7 +57,7 @@ export default function AdvancedSearch() {
 
   return (
     <div className="container my-4">
-      <h1 className="h3 mb-4">Ricerca avanzata</h1>
+      <h1 className="h3 mb-4">Advanced search</h1>
 
       {optionsError && (
         <div className="alert alert-warning py-2">{optionsError}</div>
@@ -70,13 +70,13 @@ export default function AdvancedSearch() {
             <div className="card-body d-flex flex-column gap-3">
               <div>
                 <label htmlFor="as-name" className="form-label fw-semibold">
-                  Nome
+                  Name
                 </label>
                 <input
                   id="as-name"
                   type="text"
                   className="form-control"
-                  placeholder="Contiene..."
+                  placeholder="Contains..."
                   value={filters.name}
                   onChange={(e) => updateFilters({ name: e.target.value })}
                 />
@@ -91,7 +91,7 @@ export default function AdvancedSearch() {
                   type="text"
                   list="as-brand-options"
                   className={`form-control ${brandUnmatched ? "is-invalid" : ""}`}
-                  placeholder="Scegli un brand..."
+                  placeholder="Choose a brand..."
                   value={brandText}
                   onChange={(e) => handleBrandChange(e.target.value)}
                 />
@@ -102,21 +102,21 @@ export default function AdvancedSearch() {
                 </datalist>
                 {brandUnmatched && (
                   <div className="invalid-feedback">
-                    Seleziona un brand dall'elenco.
+                    Select a brand from the list.
                   </div>
                 )}
               </div>
 
               <div>
                 <span className="form-label fw-semibold d-block">
-                  Anno di uscita
+                  Release year
                 </span>
                 <div className="input-group">
                   <input
                     type="number"
                     className="form-control"
-                    placeholder="Dal"
-                    aria-label="Anno dal"
+                    placeholder="From"
+                    aria-label="Year from"
                     value={filters.yearFrom}
                     onChange={(e) => updateFilters({ yearFrom: e.target.value })}
                   />
@@ -124,8 +124,8 @@ export default function AdvancedSearch() {
                   <input
                     type="number"
                     className="form-control"
-                    placeholder="Al"
-                    aria-label="Anno al"
+                    placeholder="To"
+                    aria-label="Year to"
                     value={filters.yearTo}
                     onChange={(e) => updateFilters({ yearTo: e.target.value })}
                   />
@@ -134,7 +134,7 @@ export default function AdvancedSearch() {
 
               <div>
                 <span className="form-label fw-semibold d-block">
-                  Note <span className="text-muted fw-normal small">(tutte)</span>
+                  Notes <span className="text-muted fw-normal small">(all of them)</span>
                 </span>
                 <NotePicker
                   selected={filters.notes}
@@ -145,7 +145,7 @@ export default function AdvancedSearch() {
 
               <div>
                 <span className="form-label fw-semibold d-block">
-                  Accordi <span className="text-muted fw-normal small">(tutti)</span>
+                  Accords <span className="text-muted fw-normal small">(all of them)</span>
                 </span>
 
                 {filters.accordIds.length > 0 && (
@@ -162,7 +162,7 @@ export default function AdvancedSearch() {
                             type="button"
                             className="btn-close btn-close-white"
                             style={{ fontSize: "0.5rem" }}
-                            aria-label={`Rimuovi ${name}`}
+                            aria-label={`Remove ${name}`}
                             onClick={() => toggleAccord(id)}
                           />
                         </span>
@@ -175,7 +175,7 @@ export default function AdvancedSearch() {
                     resets so more accords can be added one after another. */}
                 <select
                   className="form-select"
-                  aria-label="Aggiungi un accordo"
+                  aria-label="Add an accord"
                   value=""
                   onChange={(e) => {
                     const id = Number(e.target.value);
@@ -185,10 +185,10 @@ export default function AdvancedSearch() {
                 >
                   <option value="">
                     {accords.length === 0
-                      ? "Caricamento accordi..."
+                      ? "Loading accords..."
                       : availableAccords.length === 0
-                        ? "Tutti gli accordi selezionati"
-                        : "Aggiungi un accordo..."}
+                        ? "All accords selected"
+                        : "Add an accord..."}
                   </option>
                   {availableAccords.map((a) => (
                     <option key={a.id} value={a.id}>
@@ -204,7 +204,7 @@ export default function AdvancedSearch() {
                 onClick={handleReset}
                 disabled={!hasFilters && brandText === ""}
               >
-                Azzera filtri
+                Clear filters
               </button>
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function AdvancedSearch() {
         <section className="col-lg-8">
           {!hasFilters && (
             <div className="text-muted text-center py-5">
-              Imposta almeno un filtro per iniziare la ricerca.
+              Set at least one filter to start searching.
             </div>
           )}
 
@@ -227,21 +227,21 @@ export default function AdvancedSearch() {
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="text-muted small">
                   {result
-                    ? `${result.totalElements.toLocaleString("it-IT")} profumi trovati`
-                    : "Ricerca in corso..."}
+                    ? `${result.totalElements.toLocaleString("en-US")} perfumes found`
+                    : "Searching..."}
                 </span>
                 {loading && (
                   <span
                     className="spinner-border spinner-border-sm text-secondary"
                     role="status"
-                    aria-label="Caricamento"
+                    aria-label="Loading"
                   />
                 )}
               </div>
 
               {result && result.content.length === 0 && (
                 <div className="text-muted text-center py-5">
-                  Nessun profumo corrisponde ai filtri.
+                  No perfumes match these filters.
                 </div>
               )}
 
@@ -288,7 +288,7 @@ export default function AdvancedSearch() {
               {result && result.totalPages > 1 && (
                 <nav
                   className="d-flex align-items-center justify-content-between mt-3"
-                  aria-label="Paginazione risultati"
+                  aria-label="Results pagination"
                 >
                   <button
                     type="button"
@@ -296,10 +296,10 @@ export default function AdvancedSearch() {
                     disabled={page === 0 || loading}
                     onClick={() => setPage(page - 1)}
                   >
-                    ← Precedente
+                    ← Previous
                   </button>
                   <span className="small text-muted">
-                    Pagina {page + 1} di {result.totalPages}
+                    Page {page + 1} of {result.totalPages}
                   </span>
                   <button
                     type="button"
@@ -307,7 +307,7 @@ export default function AdvancedSearch() {
                     disabled={page >= result.totalPages - 1 || loading}
                     onClick={() => setPage(page + 1)}
                   >
-                    Successiva →
+                    Next →
                   </button>
                 </nav>
               )}

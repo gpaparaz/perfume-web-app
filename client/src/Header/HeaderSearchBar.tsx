@@ -22,18 +22,18 @@ export default function HeaderSearchBar() {
   const { mode, setMode, query, setQuery, results, loading, error, clear } =
     useHeaderSearch();
 
-  // Stato di UI (dropdown aperto/chiuso, elemento evidenziato da tastiera):
-  // resta locale al componente perché non riguarda la ricerca in sé, e
-  // l'hook non lo espone di proposito.
+  // UI state (dropdown open/closed, keyboard-highlighted item): kept local
+  // to the component because it isn't about the search itself, and the
+  // hook deliberately doesn't expose it.
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Apre/chiude il dropdown in base a cosa arriva dall'hook (prima lo
-  // faceva runSearch al termine del fetch; ora runSearch è dentro l'hook,
-  // quindi lo deduciamo qui osservando risultati/loading/errore).
+  // Opens/closes the dropdown based on what the hook returns (runSearch
+  // used to do it after the fetch; now runSearch lives inside the hook,
+  // so we derive it here from results/loading/error).
   useEffect(() => {
     setActiveIndex(-1);
     if (query.trim().length < MIN_CHARS) {
@@ -43,7 +43,7 @@ export default function HeaderSearchBar() {
     setIsOpen(loading || results.length > 0 || !!error);
   }, [results, loading, error, query]);
 
-  // Chiude il dropdown al click fuori dal componente.
+  // Closes the dropdown on clicks outside the component.
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -82,9 +82,9 @@ export default function HeaderSearchBar() {
   }
 
   function handleModeChange(e: ChangeEvent<HTMLSelectElement>) {
-    // setMode qui è già changeMode dell'hook: resetta i risultati e la
-    // useEffect interna rilancia da sola la ricerca sulla nuova modalità,
-    // non serve richiamare nulla manualmente.
+    // setMode here is already the hook's changeMode: it resets the results
+    // and the hook's internal useEffect re-runs the search for the new mode
+    // on its own, so nothing needs to be triggered manually.
     setMode(e.target.value as SearchMode);
   }
 
@@ -98,11 +98,11 @@ export default function HeaderSearchBar() {
         <select
           value={mode}
           onChange={handleModeChange}
-          aria-label="Cerca per"
+          aria-label="Search by"
           className="form-select flex-grow-0 w-auto"
         >
-          <option value="perfume">Profumo</option>
-          <option value="ingredient">Ingrediente</option>
+          <option value="perfume">Perfume</option>
+          <option value="ingredient">Ingredient</option>
         </select>
 
         <input
@@ -113,8 +113,8 @@ export default function HeaderSearchBar() {
           onFocus={() => results.length > 0 && setIsOpen(true)}
           placeholder={
             mode === "perfume"
-              ? "Cerca un profumo..."
-              : "Cerca un ingrediente..."
+              ? "Search a perfume..."
+              : "Search an ingredient..."
           }
           className="form-control"
           aria-autocomplete="list"
@@ -193,7 +193,7 @@ export default function HeaderSearchBar() {
         results.length === 0 &&
         query.trim().length >= MIN_CHARS && (
           <div className="dropdown-menu show w-100 mt-1 shadow-sm px-3 py-2 small text-muted">
-            Nessun risultato per "{query}"
+            No results for "{query}"
           </div>
         )}
     </div>

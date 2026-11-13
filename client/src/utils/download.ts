@@ -16,5 +16,5 @@ function cell(v: unknown): string {
 
 export function toCsv(headers: string[], rows: unknown[][]): string {
     const lines = [headers, ...rows].map((r) => r.map(cell).join(","));
-    return "\uFEFF" + lines.join("\r\n"); // BOM per Excel
+    return "\uFEFF" + lines.join("\r\n"); // BOM for Excel
 }

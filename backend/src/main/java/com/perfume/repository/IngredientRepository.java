@@ -24,7 +24,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     List<Ingredient> findAllByOrderByNameAsc();
 
-    // La query istanzia direttamente il DTO leggendo solo 5 colonne dal DB
+    // The query instantiates the DTO directly, reading only 5 columns from the DB
     @Query("SELECT new com.perfume.dto.IngredientSummaryDTO(i.id, i.name, i.category, i.subcategory, i.typicalVolatility, i.imageUrl) "
             +
             "FROM Ingredient i ORDER BY i.name ASC")

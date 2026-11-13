@@ -26,10 +26,10 @@ export default function IngredientInspect() {
         setIngredient(response.data);
       } catch (err) {
         console.error(
-          "Errore nel recupero dei dettagli dell'ingrediente:",
+          "Failed to fetch ingredient details:",
           err
         );
-        setError("Impossibile caricare i dettagli della materia prima.");
+        setError("Could not load the raw material details.");
       } finally {
         setLoading(false);
       }
@@ -64,8 +64,8 @@ export default function IngredientInspect() {
       setEditing(false);
       setDraft(null);
     } catch (e) {
-      console.error("Errore nel salvataggio:", e);
-      setSaveError("Salvataggio non riuscito. Riprova.");
+      console.error("Save failed:", e);
+      setSaveError("Save failed. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -112,14 +112,14 @@ export default function IngredientInspect() {
       i.imageUrl,
       i.fromGlossary,
     ];
-    downloadText(`${i.name || "ingrediente"}.csv`, toCsv(headers, [row]));
+    downloadText(`${i.name || "ingredient"}.csv`, toCsv(headers, [row]));
   };
 
   if (loading) {
     return (
       <div className="d-flex justify-content-center my-5">
         <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Caricamento in corso...</span>
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
     );
@@ -129,13 +129,13 @@ export default function IngredientInspect() {
     return (
       <div className="container my-5 text-center">
         <div className="alert alert-danger">
-          {error || "Ingrediente non trovato."}
+          {error || "Ingredient not found."}
         </div>
         <button
           className="btn btn-primary"
           onClick={() => navigate("/ingredient")}
         >
-          Torna al Glossario
+          Back to Glossary
         </button>
       </div>
     );
@@ -167,32 +167,32 @@ export default function IngredientInspect() {
       <div className="container my-5">
         <div className="card shadow-sm p-4">
           <h1 className="display-6 mb-1">{ingredient.name}</h1>
-          <p className="text-muted">Modifica scheda (nome non modificabile)</p>
+          <p className="text-muted">Edit sheet (name is read-only)</p>
           {saveError && <div className="alert alert-danger">{saveError}</div>}
 
           <div className="row">
-            <div className="col-md-6">{tf("Categoria", "category")}</div>
+            <div className="col-md-6">{tf("Category", "category")}</div>
             <div className="col-md-6">
-              {tf("Sottocategoria", "subcategory")}
+              {tf("Subcategory", "subcategory")}
             </div>
             <div className="col-md-4">
-              {tf("Volatilità tipica", "typicalVolatility")}
+              {tf("Typical volatility", "typicalVolatility")}
             </div>
             <div className="col-md-4">
-              {tf("Intensità odore", "odorStrength")}
+              {tf("Odor strength", "odorStrength")}
             </div>
             <div className="col-md-4">
-              {tf("Nome botanico", "botanicalName")}
+              {tf("Botanical name", "botanicalName")}
             </div>
           </div>
-          {tf("Descrizione breve", "shortDescription", 3)}
-          {tf("Apparenza", "appearance", 2)}
-          {tf("Paesi produttori", "producingCountries", 2)}
-          {tf("Evoluzione immediata", "evolutionImmediate", 2)}
-          {tf("Evoluzione dopo ore", "evolutionAfterHours", 2)}
-          {tf("Evoluzione dopo giorni", "evolutionAfterDays", 2)}
-          {tf("Testo completo", "fullExtractedText", 5)}
-          {tf("URL foto", "imageUrl")}
+          {tf("Short description", "shortDescription", 3)}
+          {tf("Appearance", "appearance", 2)}
+          {tf("Producing countries", "producingCountries", 2)}
+          {tf("Immediate evolution", "evolutionImmediate", 2)}
+          {tf("Evolution after hours", "evolutionAfterHours", 2)}
+          {tf("Evolution after days", "evolutionAfterDays", 2)}
+          {tf("Full text", "fullExtractedText", 5)}
+          {tf("Photo URL", "imageUrl")}
 
           <div className="d-flex gap-2 mt-3">
             <button
@@ -200,14 +200,14 @@ export default function IngredientInspect() {
               onClick={save}
               disabled={saving}
             >
-              {saving ? "Salvataggio..." : "Salva"}
+              {saving ? "Saving..." : "Save"}
             </button>
             <button
               className="btn btn-outline-secondary"
               onClick={cancelEdit}
               disabled={saving}
             >
-              Annulla
+              Cancel
             </button>
           </div>
         </div>
@@ -224,15 +224,15 @@ export default function IngredientInspect() {
             className="btn btn-outline-secondary"
             onClick={() => navigate(-1)}
           >
-            ← Indietro
+            ← Back
           </button>
         </div>
         <div>
           <button className="btn btn-primary" onClick={startEdit}>
-            Modifica
+            Edit
           </button>
           <button className="btn btn-outline-success" onClick={exportCsv}>
-            ⬇ Esporta CSV
+            ⬇ Export CSV
           </button>
         </div>
       </div>
@@ -265,21 +265,21 @@ export default function IngredientInspect() {
 
         <div className="row g-4 mt-2">
           <div className="col-md-6">
-            <h5>Descrizione olfattiva</h5>
+            <h5>Olfactory description</h5>
             <p className="p-3 bg-light rounded">
-              {ingredient.shortDescription || "Nessuna descrizione presente."}
+              {ingredient.shortDescription || "No description available."}
             </p>
           </div>
           <div className="col-md-6">
-            <h5>Evoluzione olfattiva</h5>
+            <h5>Olfactory evolution</h5>
             <p className="p-3 bg-light rounded">
-              {ingredient.evolutionImmediate || "Dati non disponibili."}
+              {ingredient.evolutionImmediate || "Data not available."}
             </p>
             <p className="p-3 bg-light rounded">
-              {ingredient.evolutionAfterHours || "Dati non disponibili."}
+              {ingredient.evolutionAfterHours || "Data not available."}
             </p>
             <p className="p-3 bg-light rounded">
-              {ingredient.evolutionAfterDays || "Dati non disponibili."}
+              {ingredient.evolutionAfterDays || "Data not available."}
             </p>
           </div>
         </div>
@@ -287,17 +287,17 @@ export default function IngredientInspect() {
         <table className="table table-striped table-bordered mt-3">
           <tbody>
             <tr>
-              <td>Nome botanico: {ingredient.botanicalName || "N/D"}</td>
+              <td>Botanical name: {ingredient.botanicalName || "N/A"}</td>
             </tr>
             <tr>
-              <td>Intensità odore: {ingredient.odorStrength || "N/D"}</td>
+              <td>Odor strength: {ingredient.odorStrength || "N/A"}</td>
             </tr>
             <tr>
-              <td>Apparenza: {ingredient.appearance || "N/D"}</td>
+              <td>Appearance: {ingredient.appearance || "N/A"}</td>
             </tr>
             <tr>
               <td>
-                Paesi produttori: {ingredient.producingCountries || "N/D"}
+                Producing countries: {ingredient.producingCountries || "N/A"}
               </td>
             </tr>
           </tbody>

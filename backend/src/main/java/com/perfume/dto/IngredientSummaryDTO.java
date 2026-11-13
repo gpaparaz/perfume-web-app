@@ -8,11 +8,11 @@ public class IngredientSummaryDTO {
     private String typicalVolatility;
     private String imageUrl;
 
-    // 1. Costruttore vuoto di default (Essenziale come salvagente per Hibernate)
+    // 1. Default no-arg constructor (needed as a fallback for Hibernate)
     public IngredientSummaryDTO() {
     }
 
-    // 2. Costruttore completo
+    // 2. Full constructor
     // Ingredient.java
     public IngredientSummaryDTO(Long id, String name, String category, String subcategory, String typicalVolatility,
             String imageUrl) {

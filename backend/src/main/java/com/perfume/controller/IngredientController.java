@@ -22,14 +22,14 @@ public class IngredientController {
     @Autowired
     private IngredientService ingredientService;
 
-    // 1. Endpoint globale: restituisce solo i dati minimi
+    // 1. Global endpoint: returns only the minimal data
     @GetMapping
     public ResponseEntity<List<IngredientSummaryDTO>> getIngredientSummary() {
         return ResponseEntity.ok(ingredientService.getAllIngredientSummaries());
     }
 
-    // 2. Endpoint Inspect: restituisce l'ingrediente completo con TUTTE le colonne
-    // per ID
+    // 2. Inspect endpoint: returns the full ingredient with ALL columns
+    // by ID
     @GetMapping("/{id}")
     public ResponseEntity<Ingredient> getIngredientById(@PathVariable Long id) {
         return ingredientService.getIngredientById(id)

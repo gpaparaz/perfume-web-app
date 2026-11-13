@@ -6,12 +6,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * CORS configurato una sola volta per tutta l'app, invece di ripetere
+ * CORS configured once for the whole app, instead of repeating
  * 
- * @CrossOrigin su ogni controller. Le origin ammesse vengono da
- *              application.properties (vedi app.cors.allowed-origins), così
- *              cambiano
- *              per ambiente senza toccare codice Java.
+ * @CrossOrigin on every controller. Allowed origins come from
+ *              application.properties (see app.cors.allowed-origins), so
+ *              they can change
+ *              per environment without touching Java code.
  */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {

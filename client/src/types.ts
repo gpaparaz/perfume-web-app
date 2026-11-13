@@ -1,4 +1,4 @@
-// Interfaccia per la lista del glossario (card)
+// Glossary list item (card)
 export interface IngredientSummary {
   id: number;
   name: string;
@@ -8,7 +8,7 @@ export interface IngredientSummary {
   imageUrl: string;
 }
 
-// Interfaccia completa per l'inspect (scheda tecnica)
+// Full ingredient for the inspect page (technical sheet)
 export interface Ingredient extends IngredientSummary {
   fromGlossary?: boolean;
   shortDescription?: string | null;

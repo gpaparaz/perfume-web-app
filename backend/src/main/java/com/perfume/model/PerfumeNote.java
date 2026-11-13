@@ -19,19 +19,19 @@ public class PerfumeNote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Connette perfume_id al Profumo
+    // Links perfume_id to the Perfume
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "perfume_id", nullable = false)
     @JsonIgnoreProperties({ "notes", "accords", "brand" })
     private Perfume perfume;
 
-    // Connette ingredient_id all'Ingrediente/Glossario
+    // Links ingredient_id to the Ingredient/Glossary
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ingredient_id", nullable = false)
     @JsonIgnoreProperties("perfumeNotes")
     private Ingredient ingredient;
 
-    // Valori del dump: "top", "heart", "base"
+    // Values from the dump: "top", "heart", "base"
     private String layer;
 
     public PerfumeNote() {

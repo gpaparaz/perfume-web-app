@@ -21,8 +21,8 @@ export const useBrands = (initialLetter: string = "A") => {
 
         setAllBrands(response.data);
       } catch (err) {
-        console.error("Errore nel recupero dei brand:", err);
-        setError("Impossibile caricare i brand. Riprova.");
+        console.error("Failed to fetch brands:", err);
+        setError("Could not load brands. Please try again.");
       } finally {
         setLoading(false);
       }

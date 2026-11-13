@@ -31,8 +31,8 @@ export default function PerfumeInspect() {
         const res = await api.get<PerfumeDetail>(`/perfumes/detail/${id}`);
         setPerfume(res.data);
       } catch (err) {
-        console.error("Errore nel recupero della fragranza:", err);
-        setError("Impossibile caricare la fragranza.");
+        console.error("Failed to fetch the fragrance:", err);
+        setError("Could not load the fragrance.");
       } finally {
         setLoading(false);
       }
@@ -74,8 +74,8 @@ export default function PerfumeInspect() {
       setPerfume(res.data);
       setEditing(false);
     } catch (e) {
-      console.error("Errore nel salvataggio:", e);
-      setSaveError("Salvataggio non riuscito. Riprova.");
+      console.error("Save failed:", e);
+      setSaveError("Save failed. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -117,7 +117,7 @@ export default function PerfumeInspect() {
     return (
       <div className="d-flex justify-content-center my-5">
         <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Caricamento in corso...</span>
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
     );
@@ -127,13 +127,13 @@ export default function PerfumeInspect() {
     return (
       <div className="container my-5 text-center">
         <div className="alert alert-danger">
-          {error || "Fragranza non trovata."}
+          {error || "Fragrance not found."}
         </div>
         <button
           className="btn btn-primary"
           onClick={() => navigate("/perfumes")}
         >
-          Torna alle fragranze
+          Back to fragrances
         </button>
       </div>
     );
@@ -146,13 +146,13 @@ export default function PerfumeInspect() {
         <div className="card shadow-sm p-4">
           <h1 className="display-6 mb-1">{perfume.title}</h1>
           <p className="text-muted">
-            Modifica scheda (titolo e brand non modificabili)
+            Edit sheet (title and brand are read-only)
           </p>
           {saveError && <div className="alert alert-danger">{saveError}</div>}
 
           <div className="mb-3">
             <label className="form-label small text-muted">
-              Anno di uscita
+              Release year
             </label>
             <input
               type="number"
@@ -165,7 +165,7 @@ export default function PerfumeInspect() {
           </div>
           <div className="mb-3">
             <label className="form-label small text-muted">
-              Naso (perfumer)
+              Nose (perfumer)
             </label>
             <input
               className="form-control"
@@ -186,7 +186,7 @@ export default function PerfumeInspect() {
             />
           </div>
           <div className="mb-3">
-            <label className="form-label small text-muted">Descrizione</label>
+            <label className="form-label small text-muted">Description</label>
             <textarea
               className="form-control"
               rows={5}
@@ -203,14 +203,14 @@ export default function PerfumeInspect() {
               onClick={save}
               disabled={saving}
             >
-              {saving ? "Salvataggio..." : "Salva"}
+              {saving ? "Saving..." : "Save"}
             </button>
             <button
               className="btn btn-outline-secondary"
               onClick={cancelEdit}
               disabled={saving}
             >
-              Annulla
+              Cancel
             </button>
           </div>
         </div>
@@ -264,15 +264,15 @@ export default function PerfumeInspect() {
             className="btn btn-outline-secondary"
             onClick={() => navigate(-1)}
           >
-            ← Indietro
+            ← Back
           </button>
         </div>
         <div>
           <button className="btn btn-primary" onClick={startEdit}>
-            Modifica
+            Edit
           </button>
           <button className="btn btn-outline-success" onClick={exportCsv}>
-            ⬇ Esporta CSV
+            ⬇ Export CSV
           </button>
         </div>
       </div>
@@ -291,7 +291,7 @@ export default function PerfumeInspect() {
                 className="bg-light rounded d-flex align-items-center justify-content-center text-muted"
                 style={{ height: 280 }}
               >
-                Nessuna foto
+                No photo
               </div>
             )}
           </div>
@@ -323,7 +323,7 @@ export default function PerfumeInspect() {
             )} */}
             {perfume.perfumer && (
               <p className="mb-2">
-                <strong>Naso:</strong> {perfume.perfumer}
+                <strong>Nose:</strong> {perfume.perfumer}
               </p>
             )}
           </div>
@@ -331,16 +331,16 @@ export default function PerfumeInspect() {
 
         <hr />
 
-        <h4 className="mb-3">Piramide olfattiva</h4>
+        <h4 className="mb-3">Olfactory pyramid</h4>
         {noNotes ? (
           <p className="text-muted">
-            Nessuna nota disponibile per questa fragranza.
+            No notes available for this fragrance.
           </p>
         ) : (
           <>
-            {renderLayer("Note di testa", perfume.top)}
-            {renderLayer("Note di cuore", perfume.heart)}
-            {renderLayer("Note di fondo", perfume.base)}
+            {renderLayer("Top notes", perfume.top)}
+            {renderLayer("Heart notes", perfume.heart)}
+            {renderLayer("Base notes", perfume.base)}
           </>
         )}
 

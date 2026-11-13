@@ -26,9 +26,9 @@ public class Brand {
     @Column(name = "logo_url")
     private String logoUrl;
 
-    // UN brand possiede MOLTI profumi
-    // 'mappedBy = "brand"' fa riferimento al nome del campo 'brand' nella classe
-    // Perfume
+    // ONE brand owns MANY perfumes
+    // 'mappedBy = "brand"' refers to the 'brand' field name in the Perfume
+    // class
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("brand")
     private List<Perfume> perfumes;

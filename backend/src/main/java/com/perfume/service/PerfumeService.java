@@ -33,15 +33,15 @@ public class PerfumeService {
         if (letter != null && !letter.trim().isEmpty()) {
             List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(letter.trim());
 
-            // 2. Converte ogni Brand nel suo DTO corrispondente
+            // 2. Converts each Brand into its matching DTO
             return brands.stream()
                     .map(BrandWithPerfumesDTO::new)
                     .toList();
         }
-        // 1. Recupera la lista di entità Brand dal DB
+        // 1. Fetches the Brand entities from the DB
         List<Brand> brands = brandRepository.findBrandsByInitialWithPerfumes(letter);
 
-        // 2. Converte ogni Brand nel suo DTO corrispondente
+        // 2. Converts each Brand into its matching DTO
         return brands.stream()
                 .map(BrandWithPerfumesDTO::new)
                 .toList();

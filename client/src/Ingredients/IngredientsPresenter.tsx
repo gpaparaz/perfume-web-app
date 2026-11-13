@@ -9,7 +9,7 @@ export default function IngredientsPresenter() {
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4">Glossario delle Materie Prime</h1>
+      <h1 className="mb-4">Raw Materials Glossary</h1>
 
       <AlphabetFilter
         activeLetter={selectedLetter}
@@ -19,7 +19,7 @@ export default function IngredientsPresenter() {
       {loading && (
         <div className="text-center my-5">
           <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Caricamento...</span>
+            <span className="visually-hidden">Loading...</span>
           </div>
         </div>
       )}
@@ -59,7 +59,7 @@ export default function IngredientsPresenter() {
           ) : (
             <div className="col-12 text-center my-5">
               <p className="text-muted fs-5">
-                Nessun ingrediente trovato per la lettera "{selectedLetter}".
+                No ingredients found for letter "{selectedLetter}".
               </p>
             </div>
           )}

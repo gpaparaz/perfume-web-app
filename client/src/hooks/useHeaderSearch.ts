@@ -53,8 +53,8 @@ export const useHeaderSearch = (initialMode: SearchMode = "perfume") => {
         .then((response) => setResults(response.data))
         .catch((err) => {
           if (axios.isCancel(err)) return;
-          console.error("Errore nella ricerca:", err);
-          setError("Ricerca non riuscita. Riprova.");
+          console.error("Search failed:", err);
+          setError("Search failed. Please try again.");
           setResults([]);
         })
         .finally(() => setLoading(false));

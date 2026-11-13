@@ -64,11 +64,11 @@ public class Ingredient {
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // Costruttore vuoto obbligatorio per JPA
+    // No-arg constructor required by JPA
     public Ingredient() {
     }
 
-    // GETTER E SETTER
+    // GETTERS AND SETTERS
     public Long getId() {
         return id;
     }

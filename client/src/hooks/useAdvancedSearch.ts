@@ -77,7 +77,7 @@ export const useAdvancedSearch = () => {
       })
       .catch((err) => {
         console.error("Failed to load filter options:", err);
-        setOptionsError("Impossibile caricare brand e accordi.");
+        setOptionsError("Could not load brands and accords.");
       });
   }, []);
 
@@ -114,7 +114,7 @@ export const useAdvancedSearch = () => {
         .catch((err) => {
           if (axios.isCancel(err)) return;
           console.error("Advanced search failed:", err);
-          setError("Ricerca non riuscita. Riprova.");
+          setError("Search failed. Please try again.");
           setResult(null);
         })
         .finally(() => {

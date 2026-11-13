@@ -9,15 +9,15 @@ export const useIngredients = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch iniziale globale delle card leggere
+  // Initial global fetch of the lightweight cards
   useEffect(() => {
     const fetchAll = async () => {
       try {
         const response = await api.get<IngredientSummary[]>("/ingredient");
         setAllIngredients(response.data);
       } catch (err) {
-        console.error("Errore nel recupero del glossario:", err);
-        setError("Impossibile caricare il glossario. Riprova.");
+        console.error("Failed to fetch the glossary:", err);
+        setError("Could not load the glossary. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -25,10 +25,10 @@ export const useIngredients = () => {
     fetchAll();
   }, []);
 
-  // Filtro combinato a frontend: applica sia la lettera che la ricerca testuale
+  // Combined client-side filter: applies both the letter and the text search
   const filteredIngredients = useMemo(() => {
     return allIngredients.filter((ingredient) => {
-      // 1. Controlla la lettera iniziale (se selezionata)
+      // 1. Check the initial letter (if selected)
       const matchesLetter = selectedLetter
         ? ingredient.name
             .trim()
@@ -36,7 +36,7 @@ export const useIngredients = () => {
             .startsWith(selectedLetter.toLowerCase())
         : true;
 
-      // 2. Controlla il testo scritto nella barra di ricerca (cerca nel nome o nella sotto-categoria)
+      // 2. Check the text typed in the search bar (matches name or subcategory)
       const matchesSearch = searchQuery
         ? ingredient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           ingredient.subcategory

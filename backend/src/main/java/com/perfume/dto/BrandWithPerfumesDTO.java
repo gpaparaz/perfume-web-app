@@ -10,14 +10,14 @@ public class BrandWithPerfumesDTO {
     private List<PerfumeSlimDTO> perfumes;
     private String logoUrl;
 
-    // Costruttore per la conversione dall'entità
+    // Constructor converting from the entity
     public BrandWithPerfumesDTO(Brand brand) {
         this.id = brand.getId();
         this.name = brand.getName();
         this.logoUrl = brand.getLogoUrl();
 
-        // Se brand.getPerfumes() contiene le entità Perfume, le mappiamo (se usate dei
-        // DTO per i profumi):
+        // brand.getPerfumes() holds Perfume entities: map them to the perfume
+        // DTOs:
         if (brand.getPerfumes() != null) {
             this.perfumes = brand.getPerfumes().stream()
                     .map(PerfumeSlimDTO::new)
