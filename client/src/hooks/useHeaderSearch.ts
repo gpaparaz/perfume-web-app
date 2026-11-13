@@ -16,8 +16,8 @@ const LIMIT = 8;
 
 type SearchResult = PerfumeSearchResult | IngredientSearchResult;
 
-export const useHeaderSearch = () => {
-  const [mode, setMode] = useState<SearchMode>("perfume");
+export const useHeaderSearch = (initialMode: SearchMode = "perfume") => {
+  const [mode, setMode] = useState<SearchMode>(initialMode);
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

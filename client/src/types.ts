@@ -81,3 +81,31 @@ export interface IngredientSearchResult {
   name: string;
   imageUrl: string | null;
 }
+
+// Advanced search: filter options and paged results
+export interface BrandOption {
+  id: number;
+  name: string;
+}
+
+export interface AccordOption {
+  id: number;
+  name: string;
+  nameNormalized: string;
+}
+
+export interface PerfumeSearchRow {
+  id: number;
+  title: string;
+  brandName: string;
+  releaseYear: number | null;
+  imageUrl: string | null;
+}
+
+export interface Page<T> {
+  content: T[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
