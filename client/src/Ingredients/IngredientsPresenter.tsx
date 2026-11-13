@@ -8,8 +8,8 @@ export default function IngredientsPresenter() {
   const navigate = useNavigate();
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Raw Materials Glossary</h1>
+    <div className="container">
+      <h1 className="page-title text-center">Raw Materials Glossary</h1>
 
       <AlphabetFilter
         activeLetter={selectedLetter}
@@ -37,16 +37,17 @@ export default function IngredientsPresenter() {
                 onClick={() => navigate(`/ingredient/${ingredient.id}`)}
               >
                 <div className="card h-100 shadow-sm">
-                  <div className="card-body">
+                  {ingredient.imageUrl && (
                     <img
                       src={ingredient.imageUrl}
-                      style={{
-                        height: "100px",
-                        width: "100px",
-                        objectFit: "cover",
-                      }}
+                      alt=""
+                      loading="lazy"
+                      className="card-img-top"
+                      style={{ height: "160px", objectFit: "cover" }}
                     />
-                    <h5 className="card-title text-capitalize">
+                  )}
+                  <div className="card-body">
+                    <h5 className="card-title serif fs-4 text-capitalize">
                       {ingredient.name}
                     </h5>
                     <h6 className="card-subtitle mb-2 text-muted small">

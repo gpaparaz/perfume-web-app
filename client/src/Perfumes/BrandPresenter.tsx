@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { ListRowRenderer } from "react-virtualized";
 import {
   AutoSizer,
@@ -19,7 +19,6 @@ const cache = new CellMeasurerCache({
 export default function BrandPresenter() {
   const { allBrands, loading, error, selectedLetter, setSelectedLetter } =
     useBrands();
-  const navigate = useNavigate();
   const listRef = useRef<List>(null);
 
   const scrollElement = useMemo(
@@ -124,32 +123,31 @@ export default function BrandPresenter() {
 
                 {isExpanded && (
                   <div className="accordion-collapse collapse show">
-                    <div className="accordion-body d-flex flex-wrap gap-3">
-                      {brand.perfumes.map((perfume) => (
-                        <div
-                          key={perfume.id}
-                          style={{ cursor: "pointer", width: "220px" }}
-                          onClick={() => navigate(`/perfumes/${perfume.id}`)}
-                        >
-                          <div className="card h-100 shadow-sm d-flex flex-row">
-                            <img
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                objectFit: "cover",
-                              }}
-                              src={perfume.imageUrl}
-                              alt=""
-                            />
-                            <div>
-                              <h5 className="mb-0">{perfume.title}</h5>
-                              <div className="card-body py-1">
-                                <span>{perfume.releaseYear}</span>
-                              </div>
+                    <div className="accordion-body">
+                      <div className="perfume-grid">
+                        {brand.perfumes.map((perfume) => (
+                          <Link
+                            key={perfume.id}
+                            to={`/perfumes/${perfume.id}`}
+                            className="perfume-card"
+                          >
+                            {/* Fixed aspect ratio: the row height is known
+                                before the image loads, so CellMeasurer's
+                                measurement stays valid. */}
+                            <div className="photo-plate">
+                              {perfume.imageUrl && (
+                                <img src={perfume.imageUrl} alt="" loading="lazy" />
+                              )}
                             </div>
-                          </div>
-                        </div>
-                      ))}
+                            <span className="title" title={perfume.title}>
+                              {perfume.title}
+                            </span>
+                            <span className="meta">
+                              {perfume.releaseYear || " "}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -163,6 +161,8 @@ export default function BrandPresenter() {
 
   return (
     <div className="container">
+      <h1 className="page-title text-center">Perfume Houses</h1>
+
       {loading && (
         <div className="text-center my-5">
           <div className="spinner-border text-primary" role="status">

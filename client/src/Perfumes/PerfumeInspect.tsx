@@ -281,11 +281,9 @@ export default function PerfumeInspect() {
         <div className="row g-4">
           <div className="col-md-4">
             {perfume.imageUrl ? (
-              <img
-                src={perfume.imageUrl}
-                alt={perfume.title}
-                className="img-fluid rounded"
-              />
+              <div className="photo-plate p-4" style={{ aspectRatio: "3 / 4" }}>
+                <img src={perfume.imageUrl} alt={perfume.title} />
+              </div>
             ) : (
               <div
                 className="bg-light rounded d-flex align-items-center justify-content-center text-muted"

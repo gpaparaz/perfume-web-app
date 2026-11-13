@@ -18,7 +18,16 @@ const DETAIL_PATH: Record<SearchMode, (id: number) => string> = {
 
 const MIN_CHARS = 2;
 
-export default function HeaderSearchBar() {
+interface HeaderSearchBarProps {
+  autoFocus?: boolean;
+  // Bigger controls, used by the home page hero.
+  large?: boolean;
+}
+
+export default function HeaderSearchBar({
+  autoFocus = false,
+  large = false,
+}: HeaderSearchBarProps) {
   const { mode, setMode, query, setQuery, results, loading, error, clear } =
     useHeaderSearch();
 
@@ -92,9 +101,9 @@ export default function HeaderSearchBar() {
     <div
       ref={containerRef}
       className="position-relative w-100"
-      style={{ maxWidth: "32rem" }}
+      style={{ maxWidth: large ? "40rem" : "32rem" }}
     >
-      <div className="input-group">
+      <div className={`input-group ${large ? "input-group-lg" : ""}`}>
         <select
           value={mode}
           onChange={handleModeChange}
@@ -110,6 +119,7 @@ export default function HeaderSearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
+          autoFocus={autoFocus}
           onFocus={() => results.length > 0 && setIsOpen(true)}
           placeholder={
             mode === "perfume"

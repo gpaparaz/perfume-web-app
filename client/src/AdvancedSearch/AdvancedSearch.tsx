@@ -57,7 +57,7 @@ export default function AdvancedSearch() {
 
   return (
     <div className="container my-4">
-      <h1 className="h3 mb-4">Advanced search</h1>
+      <h1 className="page-title mb-4">Advanced search</h1>
 
       {optionsError && (
         <div className="alert alert-warning py-2">{optionsError}</div>

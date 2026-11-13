@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import type { AccordDetail } from "../types";
+import { colorForAccord } from "../utils/accordColor";
 
 interface AccordPyramidProps {
   accords: AccordDetail[];
@@ -9,20 +10,6 @@ interface AccordPyramidProps {
 
 const MAX_WIDTH = 100; // % - bar of the strongest rank
 const MIN_WIDTH = 30; // % - bar of the weakest rank shown
-
-// Deterministic color per accord name: not Fragrantica's real palette
-// (which isn't public), but it guarantees the same accord always gets the
-// same color across the app, without hand-maintaining a map for each of
-// the ~98 accords in the DB.
-function colorForAccord(name: string): string {
-  let hash = 0;
-  const normalized = name.toLowerCase();
-  for (let i = 0; i < normalized.length; i++) {
-    hash = normalized.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const hue = Math.abs(hash) % 360;
-  return `hsl(${hue}, 45%, 38%)`;
-}
 
 export default function AccordPyramid({
   accords,
@@ -56,12 +43,12 @@ export default function AccordPyramid({
 
   return (
     <div>
-      <h4 className=" mb-4">{title}</h4>
+      <h4 className="eyebrow mb-3">{title}</h4>
       <div className="d-flex flex-column gap-2">
         {sortedAccords.map((accord) => (
           <div
             key={accord.id}
-            className="text-white text-center py-2 fw-semibold text-capitalize"
+            className="text-white text-center py-2 text-capitalize"
             style={{
               width: `${widthByRank.get(accord.rank)}%`,
               backgroundColor: colorForAccord(accord.name),

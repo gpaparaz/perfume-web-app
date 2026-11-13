@@ -109,3 +109,10 @@ export interface Page<T> {
   totalElements: number;
   totalPages: number;
 }
+
+export interface Stats {
+  perfumes: number;
+  brands: number;
+  ingredients: number;
+  accords: number;
+}

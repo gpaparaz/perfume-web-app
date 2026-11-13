@@ -3,37 +3,36 @@ interface AlphabetFilterProps {
   onLetterSelect: (letter: string) => void;
 }
 
+const ALPHABET = Array.from({ length: 26 }, (_, i) =>
+  String.fromCharCode(65 + i)
+);
+
 export default function AlphabetFilter({
   activeLetter,
   onLetterSelect,
 }: AlphabetFilterProps) {
-  const alphabet = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(65 + i)
-  );
-
   return (
-    <div className="d-flex flex-wrap gap-2 justify-content-center my-4">
+    <nav className="alpha-filter" aria-label="Filter by initial">
       <button
-        className={`btn btn-sm ${
-          activeLetter === "" ? "btn-primary" : "btn-outline-primary"
-        }`}
+        type="button"
+        className={`alpha-btn all ${activeLetter === "" ? "active" : ""}`}
+        aria-pressed={activeLetter === ""}
         onClick={() => onLetterSelect("")}
       >
         ALL
       </button>
 
-      {alphabet.map((letter) => (
+      {ALPHABET.map((letter) => (
         <button
           key={letter}
-          className={`btn btn-sm ${
-            activeLetter === letter ? "btn-primary" : "btn-outline-primary"
-          }`}
+          type="button"
+          className={`alpha-btn ${activeLetter === letter ? "active" : ""}`}
+          aria-pressed={activeLetter === letter}
           onClick={() => onLetterSelect(letter)}
-          style={{ width: "38px" }}
         >
           {letter}
         </button>
       ))}
-    </div>
+    </nav>
   );
 }

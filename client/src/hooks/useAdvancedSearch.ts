@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import api from "../services/axios";
 import type {
   AccordOption,
@@ -57,7 +58,16 @@ export const useAdvancedSearch = () => {
   const [accords, setAccords] = useState<AccordOption[]>([]);
   const [optionsError, setOptionsError] = useState<string | null>(null);
 
-  const [filters, setFilters] = useState<AdvancedSearchFilters>(EMPTY_FILTERS);
+  // Accords can be preselected from the URL (?accord=12&accord=40), e.g.
+  // by the accord tiles on the home page. Read once, on mount.
+  const [searchParams] = useSearchParams();
+  const [filters, setFilters] = useState<AdvancedSearchFilters>(() => ({
+    ...EMPTY_FILTERS,
+    accordIds: searchParams
+      .getAll("accord")
+      .map(Number)
+      .filter((n) => Number.isInteger(n) && n > 0),
+  }));
   const [page, setPage] = useState<number>(0);
 
   const [result, setResult] = useState<Page<PerfumeSearchRow> | null>(null);
