@@ -9,6 +9,7 @@ import {
   WindowScroller,
 } from "react-virtualized";
 import AlphabetFilter from "../CustomComponents/AlphabetFilter";
+import BrandLogo from "../CustomComponents/BrandLogo";
 import { useBrands } from "../hooks/useBrands";
 
 const cache = new CellMeasurerCache({
@@ -117,7 +118,10 @@ export default function BrandPresenter() {
                     onClick={() => toggleBrand(index, brand.id)}
                     aria-expanded={isExpanded}
                   >
-                    {brand.name}
+                    <span className="d-flex align-items-center gap-3 min-w-0">
+                      <BrandLogo name={brand.name} logoUrl={brand.logoUrl} />
+                      <span className="text-truncate">{brand.name}</span>
+                    </span>
                   </button>
                 </h2>
 

@@ -713,3 +713,42 @@ b {
 .min-w-0 {
   min-width: 0;
 }
+
+/* ---------- Brand logo / monogram ---------- */
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--pa-line);
+  background: var(--pa-surface-2);
+  color: var(--pa-accent);
+  font-family: var(--pa-serif);
+  line-height: 1;
+}
+.brand-logo.has-image {
+  background: #fff; /* logos are drawn for a white ground */
+  border-color: transparent;
+  padding: 4px;
+}
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* Fixed sizes: the brand list is virtualized, so row height must not
+   change when a logo finishes loading. */
+.brand-logo-sm {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.4rem;
+}
+.brand-logo-lg {
+  width: 5rem;
+  height: 5rem;
+  font-size: 2.4rem;
+  border-radius: var(--pa-radius);
+}

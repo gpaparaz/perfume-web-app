@@ -27,6 +27,9 @@ export interface Ingredient extends IngredientSummary {
 export interface Brand {
   id: number;
   name: string;
+  // Fragrantica designer logo; null for brands only known from Parfumo
+  // or before brand_logos.json has been imported.
+  logoUrl: string | null;
 }
 
 export interface PartialPerfumes {
