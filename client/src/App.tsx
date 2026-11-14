@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
+import BackToTop from "./CustomComponents/BackToTop";
 import Header from "./Header/Header";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <span>Data: Première Peau · Fragrantica · Parfumo</span>
         </div>
       </footer>
+      <BackToTop />
     </div>
   );
 }

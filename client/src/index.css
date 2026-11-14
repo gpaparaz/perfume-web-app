@@ -752,3 +752,45 @@ b {
   font-size: 2.4rem;
   border-radius: var(--pa-radius);
 }
+
+/* ---------- Back to top ---------- */
+
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1040;
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pa-line);
+  border-radius: 999px;
+  background: rgba(21, 35, 35, 0.92);
+  backdrop-filter: blur(6px);
+  color: var(--pa-text);
+  opacity: 0;
+  transform: translateY(0.75rem);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s, color 0.2s, border-color 0.2s;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  color: var(--pa-accent);
+  border-color: var(--pa-accent);
+}
+.back-to-top:focus-visible {
+  outline: 2px solid var(--pa-accent);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: none;
+  }
+}
